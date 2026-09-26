@@ -56,7 +56,6 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	c.JSON(
 		http.StatusCreated,
 		gin.H{
-		
 			"message": "register success",
 			"user": gin.H{
 				"user_id": user.UserID,
@@ -66,3 +65,43 @@ func (h *AuthHandler) Register(c *gin.Context) {
 		},
 	)
 }
+
+// Login
+func (h *AuthHandler) Login(c *gin.Context) {
+	var request dto.LoginRequest
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{
+				"message": "invalid request",
+			},
+		)
+		return
+	}
+
+	user, token, err := h.Service.Login(request.Email, request.Password)
+	if err != nil {
+		c.JSON(
+			http.StatusUnauthorized,
+			gin.H{
+				"message": err.Error(),
+			},
+		)
+		return
+	}
+
+	c.JSON(
+		http.StatusOK,
+		gin.H{
+			"message": "login success",
+			"token":   token,
+			"user": gin.H{
+				"user_id": user.UserID,
+				"name":    user.Name,
+				"email":   user.Email,
+			},
+		},
+	)
+}
+

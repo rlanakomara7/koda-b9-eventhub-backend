@@ -5,6 +5,7 @@ import (
 
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/models"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/repositories"
+	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/utils"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -52,4 +53,35 @@ func (s *AuthService) Register(user *models.User) error {
 
 	//save database
 	return s.UserRepo.Creatre(user)
+}
+
+// login
+func (s *AuthService) Login(email string, password string) (*models.User, string, error) {
+
+	user, err := s.UserRepo.FindByEmail(email)
+
+	if err != nil || user == nil {
+		return nil, "", errors.New("user not found")
+	}
+
+	err = bcrypt.CompareHashAndPassword(
+		[]byte(user.Password),
+		[]byte(password),
+	)
+
+	if err != nil {
+		return nil, "", errors.New("wrong password")
+	}
+
+	token, err := utils.GenerateToken(
+		user.UserID,
+		user.Email,
+		user.RoleID,
+	)
+
+	if err != nil {
+		return nil, "", err
+	}
+
+	return user, token, nil
 }
