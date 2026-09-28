@@ -7,11 +7,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/repositories"
 )
 
 var jwtSecret = []byte("eventhub_secret_key")
 
-func AuthMiddleware() gin.HandlerFunc {
+func AuthMiddleware(tokenRepo *repositories.TokenRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		authHeader := c.GetHeader("Authorization")
@@ -30,8 +31,19 @@ func AuthMiddleware() gin.HandlerFunc {
 		tokenString := strings.TrimSpace(
 			strings.TrimPrefix(
 				authHeader,
-				"Bearer"),
+				"Bearer "),
 		)
+
+		if tokenRepo.IsBlackListed(tokenString) {
+			c.JSON(
+				401,
+				gin.H{
+					"message": "token already logout",
+				},
+			)
+			c.Abort()
+			return
+		}
 
 		token, err := jwt.Parse(
 			tokenString,

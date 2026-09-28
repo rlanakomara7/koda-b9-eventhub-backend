@@ -13,7 +13,7 @@ type UserRepository struct {
 	DB *pgxpool.Pool
 }
 
-//onstructor
+//constructor
 
 func NewUserRepository(db *pgxpool.Pool) *UserRepository {
 	return &UserRepository{
@@ -97,4 +97,21 @@ func (r *UserRepository) FindByEmail(email string) (*models.User, error) {
 		return nil, err
 	}
 	return user, nil
+}
+
+// update password
+func (r *UserRepository) UpdatePassword(userID uint, password string) error {
+
+	_, err := r.DB.Exec(
+		context.Background(),
+		`
+		UPDATE users
+		SET password=$1,
+		updated_at=now()
+		WHERE user_id=$2
+		`,
+		password,
+		userID,
+	)
+	return err
 }
