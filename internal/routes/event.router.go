@@ -31,5 +31,10 @@ func EventRoutes(
 			"/:id/join",
 			memberHandler.JoinEvent,
 		)
+
+		protected.DELETE(
+			"/:id/leave",
+			memberHandler.LeaveEvent,
+		)
 	}
 }

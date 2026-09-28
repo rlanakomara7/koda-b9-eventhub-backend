@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/models"
@@ -139,4 +140,107 @@ func (r *EventRepository) GetEventByID(id uint) (*models.Event, error) {
 	}
 
 	return event, nil
+}
+
+func (r *EventRepository) GetEventDetail(
+	id uint,
+) (*models.EventDetail, error) {
+
+	query := `
+	SELECT
+
+	e.event_id,
+	e.title,
+	e.description,
+	e.banner_url,
+
+	e.event_date,
+	e.start_time,
+	e.end_time,
+
+	e.format,
+	e.location,
+	e.capacity,
+	e.status,
+
+
+	u.user_id,
+	u.name,
+	u.email,
+
+
+	c.community_id,
+	c.name,
+
+
+	(
+		SELECT COUNT(*)
+		FROM event_members em
+		WHERE em.event_id=e.event_id
+	)
+
+
+	FROM events e
+
+
+	JOIN users u
+	ON e.user_id=u.user_id
+
+
+	LEFT JOIN communities c
+	ON e.community_id=c.community_id
+
+
+	WHERE e.event_id=$1
+	`
+
+	detail := &models.EventDetail{}
+
+	var communityID sql.NullInt64
+	var communityName sql.NullString
+
+	err := r.DB.QueryRow(
+		context.Background(),
+		query,
+		id,
+	).Scan(
+
+		&detail.Event.EventID,
+		&detail.Event.Title,
+		&detail.Event.Description,
+		&detail.Event.BannerURL,
+
+		&detail.Event.EventDate,
+		&detail.Event.StartTime,
+		&detail.Event.EndTime,
+
+		&detail.Event.Format,
+		&detail.Event.Location,
+		&detail.Event.Capacity,
+		&detail.Event.Status,
+
+		&detail.Organizer.UserID,
+		&detail.Organizer.Name,
+		&detail.Organizer.Email,
+
+		&communityID,
+		&communityName,
+
+		&detail.Registered,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if communityID.Valid {
+
+		detail.Community = &models.Community{
+			CommunityID: uint(communityID.Int64),
+			Name:        communityName.String,
+		}
+
+	}
+
+	return detail, nil
 }

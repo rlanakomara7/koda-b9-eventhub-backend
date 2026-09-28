@@ -30,3 +30,17 @@ type EventDetailResponse struct {
 	Community       *CommunityResponse `json:"community"`
 	TotalRegistered int                `json:"total_registered"`
 }
+
+type EventInfoResponse struct {
+	Date string `json:"date"`
+
+	Time string `json:"time"`
+
+	Location string `json:"location"`
+
+	Capacity int `json:"capacity"`
+
+	Registered int `json:"registered"`
+
+	SpotsLeft int `json:"spots_left"`
+}

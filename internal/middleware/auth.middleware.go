@@ -7,10 +7,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/config"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/repositories"
 )
-
-var jwtSecret = []byte("eventhub_secret_key")
 
 func AuthMiddleware(tokenRepo *repositories.TokenRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -52,7 +51,8 @@ func AuthMiddleware(tokenRepo *repositories.TokenRepository) gin.HandlerFunc {
 				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 					return nil, errors.New("Invalid signing method")
 				}
-				return jwtSecret, nil
+
+				return []byte(config.GetJWTSecret()), nil
 			},
 		)
 

@@ -135,3 +135,45 @@ func (h *EventMemberHandler) JoinEvent(
 		"message": "join event success",
 	})
 }
+
+// leave event
+func (h *EventMemberHandler) LeaveEvent(
+	c *gin.Context,
+) {
+
+	id, err := strconv.Atoi(
+		c.Param("id"),
+	)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "invalid event id",
+		})
+		return
+	}
+
+	userID, exists := c.Get("user_id")
+
+	if !exists {
+		c.JSON(401, gin.H{
+			"message": "unauthorized",
+		})
+		return
+	}
+
+	err = h.Service.LeaveEvent(
+		uint(id),
+		uint(userID.(float64)),
+	)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "leave event success",
+	})
+}

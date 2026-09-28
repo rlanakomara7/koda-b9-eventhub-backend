@@ -40,3 +40,23 @@ func (s *EventMemberService) JoinEvent(
 	)
 	return err
 }
+
+func (s *EventMemberService) LeaveEvent(
+	eventID uint,
+	userID uint,
+) error {
+
+	joined := s.EventMemberRepo.IsJoined(
+		eventID,
+		userID,
+	)
+
+	if !joined {
+		return errors.New("not joined event")
+	}
+
+	return s.EventMemberRepo.LeaveEvent(
+		eventID,
+		userID,
+	)
+}

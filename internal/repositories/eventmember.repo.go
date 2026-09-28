@@ -65,3 +65,23 @@ func (r *EventMemberRepository) IsJoined(
 
 	return count > 0
 }
+
+// leave event
+func (r *EventMemberRepository) LeaveEvent(
+	eventID uint,
+	userID uint,
+) error {
+
+	_, err := r.DB.Exec(
+		context.Background(),
+		`
+		DELETE FROM event_members
+		WHERE event_id=$1
+		AND user_id=$2
+		`,
+		eventID,
+		userID,
+	)
+
+	return err
+}

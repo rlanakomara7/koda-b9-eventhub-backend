@@ -4,9 +4,8 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/config"
 )
-
-var jwtSecret = []byte("eventhub_secret_key")
 
 func GenerateToken(userID uint, email string, roleID uint) (string, error) {
 
@@ -23,5 +22,7 @@ func GenerateToken(userID uint, email string, roleID uint) (string, error) {
 		claims,
 	)
 
-	return token.SignedString(jwtSecret)
+	return token.SignedString(
+		[]byte(config.GetJWTSecret()),
+	)
 }

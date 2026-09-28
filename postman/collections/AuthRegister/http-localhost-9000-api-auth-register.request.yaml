@@ -1,0 +1,17 @@
+$kind: http-request
+name: http://localhost:9000/api/auth/register
+description: ""
+url: http://localhost:9000/api/auth/register
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\":\"Budi\",\r
+
+    \    \"email\":\"budi@mail.com\",\r
+
+    \    \"password\":\"123456\"\r
+
+    }"
+order: 1790566846946
