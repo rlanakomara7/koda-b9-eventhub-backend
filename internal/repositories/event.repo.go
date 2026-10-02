@@ -3,18 +3,24 @@ package repositories
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
+	"fmt"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/redis/go-redis/v9"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/models"
 )
 
 type EventRepository struct {
-	DB *pgxpool.Pool
+	DB    *pgxpool.Pool
+	Redis *redis.Client
 }
 
-func NewEventRepository(db *pgxpool.Pool) *EventRepository {
+func NewEventRepository(db *pgxpool.Pool, redisClient *redis.Client) *EventRepository {
 	return &EventRepository{
-		DB: db,
+		DB:    db,
+		Redis: redisClient,
 	}
 }
 
@@ -89,7 +95,33 @@ func (r *EventRepository) GetEvents(search string, format string) ([]models.Even
 // get event by id
 func (r *EventRepository) GetEventByID(id uint) (*models.Event, error) {
 
-	query := `
+	ctx := context.Background()
+	key := fmt.Sprintf("event:%d", id)
+
+	//cache redis
+	cache, err := r.Redis.Get(ctx, key).Result()
+
+	if err == nil {
+		fmt.Println("REDIS DATA FOUND:", key)
+
+		var event models.Event
+
+		err = json.Unmarshal([]byte(cache), &event)
+		if err != nil {
+			fmt.Println("JSON UNMARSHAL ERROR:", err)
+		} else {
+			fmt.Println("CACHE HIT:", key)
+			return &event, nil
+		}
+	}
+
+	if err != nil && err != redis.Nil {
+		fmt.Println("REDIS GET ERROR:", err)
+	}
+
+	fmt.Println("CACHE MISS", key)
+	// QUERY DATABASE
+	query := `	
 	SELECT
 		event_id,
 		user_id,
@@ -113,8 +145,8 @@ func (r *EventRepository) GetEventByID(id uint) (*models.Event, error) {
 
 	event := &models.Event{}
 
-	err := r.DB.QueryRow(
-		context.Background(),
+	err = r.DB.QueryRow(
+		ctx,
 		query,
 		id,
 	).Scan(
@@ -139,6 +171,24 @@ func (r *EventRepository) GetEventByID(id uint) (*models.Event, error) {
 		return nil, err
 	}
 
+	//struct to json
+	data, err := json.Marshal(event)
+	if err != nil {
+		return nil, err
+	}
+
+	err = r.Redis.Set(
+		ctx,
+		key,
+		data,
+		10*time.Minute,
+	).Err()
+
+	if err != nil {
+		fmt.Println("REDIS SET ERROR:", err)
+	} else {
+		fmt.Println("CACHE SAVED:", key)
+	}
 	return event, nil
 }
 

@@ -1,0 +1,70 @@
+basePath: /
+definitions:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.RegisterRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:9000
+info:
+  contact: {}
+  description: Backend for EventHub Application
+  title: KODA EventHub API
+  version: "1.0"
+paths:
+  /api/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register Account for new user
+      parameters:
+      - description: Register data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      summary: Register Account
+      tags:
+      - auth
+securityDefinitions:
+  BearerToken:
+    description: Bearer Token used as identity for accessing backend
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

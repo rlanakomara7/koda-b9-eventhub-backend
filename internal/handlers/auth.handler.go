@@ -25,7 +25,18 @@ func NewAuthHandler(service *services.AuthService, tokenRepo *repositories.Token
 	}
 }
 
-// Register
+// Register User
+//
+// @Summary			Register Account
+// @Description		Register Account for new user
+// @Tags			auth
+// @Accept			json
+// @Produce			json
+// @Param			request 	body dto.RegisterRequest 	true 	"Register data"
+// @Success			201			{object}		dto.Response
+// @Failure			400			{object}		dto.ErrorResponse
+// @Failure			500			{object}		dto.ErrorResponse
+// @Router 			/api/auth/register [post]
 func (h *AuthHandler) Register(c *gin.Context) {
 
 	var request dto.RegisterRequest
