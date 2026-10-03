@@ -37,7 +37,7 @@ func AuthMiddleware(tokenRepo *repositories.TokenRepository) gin.HandlerFunc {
 			c.JSON(
 				401,
 				gin.H{
-					"message": "token already logout",
+					"message": "please login again",
 				},
 			)
 			c.Abort()
@@ -69,11 +69,30 @@ func AuthMiddleware(tokenRepo *repositories.TokenRepository) gin.HandlerFunc {
 
 		claims, ok := token.Claims.(jwt.MapClaims)
 
-		if ok {
-			c.Set("user_id", claims["user_id"])
-			c.Set("email", claims["email"])
-			c.Set("role_id", claims["role_id"])
+		if !ok {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"message": "invalid token claims",
+			},
+			)
+			c.Abort()
+			return
 		}
+
+		userIDFloat, ok := claims["user_id"].(float64)
+
+		if !ok {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"message": "invalid user id",
+			},
+			)
+			c.Abort()
+			return
+		}
+
+		c.Set("user_id", uint(userIDFloat))
+		c.Set("email", claims["email"])
+		c.Set("role_id", claims["role_id"])
+
 		c.Next()
 	}
 }

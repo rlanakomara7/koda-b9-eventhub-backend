@@ -62,7 +62,7 @@ func (r *EventRepository) GetEvents(search string, format string) ([]models.Even
 	}
 
 	defer rows.Close()
-	var events []models.Event
+	events := []models.Event{}
 
 	for rows.Next() {
 		var event models.Event
@@ -222,24 +222,19 @@ func (r *EventRepository) GetEventDetail(
 	c.community_id,
 	c.name,
 
-
 	(
 		SELECT COUNT(*)
 		FROM event_members em
 		WHERE em.event_id=e.event_id
 	)
 
-
 	FROM events e
-
 
 	JOIN users u
 	ON e.user_id=u.user_id
 
-
 	LEFT JOIN communities c
 	ON e.community_id=c.community_id
-
 
 	WHERE e.event_id=$1
 	`

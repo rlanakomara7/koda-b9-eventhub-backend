@@ -5,6 +5,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/handlers"
+	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/middleware"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/repositories"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/services"
 	swaggerFiles "github.com/swaggo/files"
@@ -14,6 +15,9 @@ import (
 func InitMainRouter(db *pgxpool.Pool, redisClient *redis.Client) *gin.Engine {
 
 	router := gin.Default()
+
+	//cors
+	router.Use(middleware.Cors)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
@@ -28,6 +32,7 @@ func InitMainRouter(db *pgxpool.Pool, redisClient *redis.Client) *gin.Engine {
 
 	//handler
 	authHandler := handlers.NewAuthHandler(authService, tokenRepo, passwordService)
+	userHandler := handlers.NewUserHandler(*userRepository)
 
 	//event
 	eventRepo := repositories.NewEventRepository(db, redisClient)
@@ -42,6 +47,10 @@ func InitMainRouter(db *pgxpool.Pool, redisClient *redis.Client) *gin.Engine {
 	eventMemberHandler := handlers.NewEventMemberHandler(eventMemberService)
 
 	EventRoutes(router, eventHandler, eventMemberHandler, tokenRepo)
+
+	// Route profile user.
+	UserRoutes(router, userHandler, tokenRepo)
+
 	//route
 	AuthRoutes(router, authHandler)
 

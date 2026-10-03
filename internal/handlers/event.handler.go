@@ -55,6 +55,17 @@ func (h *EventHandler) GetEvents(
 		return
 	}
 
+	if search != "" && len(events) == 0 {
+		c.JSON(
+			http.StatusNotFound,
+			gin.H{
+				"message": "event not found",
+				"data":    events,
+			},
+		)
+		return
+	}
+
 	c.JSON(
 		http.StatusOK,
 		gin.H{

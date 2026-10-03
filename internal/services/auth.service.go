@@ -52,7 +52,7 @@ func (s *AuthService) Register(user *models.User) error {
 	user.Status = "active"
 
 	//save database
-	return s.UserRepo.Creatre(user)
+	return s.UserRepo.Create(user)
 }
 
 // login

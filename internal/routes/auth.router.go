@@ -26,10 +26,4 @@ func AuthRoutes(router *gin.Engine, handler *handlers.AuthHandler) {
 
 	protected.Use(middleware.AuthMiddleware(handler.TokenRepo))
 
-	{
-		protected.GET(
-			"/profile",
-			handlers.Profile,
-		)
-	}
 }

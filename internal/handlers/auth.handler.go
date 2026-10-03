@@ -71,14 +71,8 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	}
 
 	c.JSON(
-		http.StatusCreated,
-		gin.H{
+		http.StatusCreated, gin.H{
 			"message": "register success",
-			"user": gin.H{
-				"user_id": user.UserID,
-				"name":    user.Email,
-				"email":   user.Email,
-			},
 		},
 	)
 }
@@ -113,9 +107,9 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		"token": token,
 
 		"user": gin.H{
-			"user_id": user.UserID,
-			"name":    user.Name,
-			"email":   user.Email,
+			"name":       user.Name,
+			"email":      user.Email,
+			"avatar_url": user.AvatarURL,
 		},
 	})
 }
@@ -136,15 +130,13 @@ func (h *AuthHandler) Logout(c *gin.Context) {
 	err := h.TokenRepo.TokenBlackList(token)
 
 	if err != nil {
-		c.JSON(500, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "logout failed",
 		})
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"message": "logout success",
-	})
+	c.Status(http.StatusNoContent)
 }
 
 // forgotpassword
