@@ -13,10 +13,14 @@ type LoginRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
-//response succes
-type AuthResponse struct {
-	UserID  uint   `json:"user_id"`
-	Name    string `json:"name"`
-	Email   string `json:"email"`
-	Message string `json:"message"`
+type AuthUserResponse struct {
+	Name      string `json:"name"`
+	Email     string `json:"email"`
+	AvatarURL string `json:"avatar_url"`
+}
+
+type LoginResponse struct {
+	Message string           `json:"message"`
+	Token   string           `json:"token"`
+	User    AuthUserResponse `json:"user"`
 }

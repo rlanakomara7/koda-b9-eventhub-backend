@@ -47,3 +47,47 @@ func (r *PasswordRepository) FindResetToken(token string) (uint, error) {
 
 	return userID, err
 }
+
+// Reset pass DB transaction
+func (r *PasswordRepository) ResetPasswordTransaction(
+	userID uint,
+	token string,
+	password string,
+) error {
+
+	ctx := context.Background()
+
+	tx, err := r.DB.Begin(ctx)
+	if err != nil {
+		return err
+	}
+
+	defer tx.Rollback(ctx)
+
+	_, err = tx.Exec(
+		ctx,
+		`
+		UPDATE users
+		SET password=$1,
+		updated_at=now()
+		WHERE user_id=$2`,
+		password,
+		userID,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.Exec(
+		ctx,
+		`
+		DELETE FROM password_resets
+		WHERE token=$1`,
+		token,
+	)
+	if err != nil {
+		return err
+	}
+	return tx.Commit(ctx)
+}

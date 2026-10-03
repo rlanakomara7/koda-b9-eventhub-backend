@@ -74,8 +74,9 @@ func (s *PasswordService) ResetPassword(email string, token string, newPassword 
 		return err
 	}
 
-	return s.UserRepo.UpdatePassword(
+	return s.PasswordRepo.ResetPasswordTransaction(
 		user.UserID,
+		token,
 		hash,
 	)
 

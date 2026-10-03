@@ -64,7 +64,7 @@ func (h *AuthHandler) Register(c *gin.Context) {
 		c.JSON(
 			400,
 			gin.H{
-				"Message": err.Error(),
+				"message": err.Error(),
 			},
 		)
 		return
@@ -101,17 +101,17 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"message": "login success",
-
-		"token": token,
-
-		"user": gin.H{
-			"name":       user.Name,
-			"email":      user.Email,
-			"avatar_url": user.AvatarURL,
+	response := dto.LoginResponse{
+		Message: "login success",
+		Token:   token,
+		User: dto.AuthUserResponse{
+			Name:      user.Name,
+			Email:     user.Email,
+			AvatarURL: user.AvatarURL,
 		},
-	})
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 //logout
