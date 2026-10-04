@@ -9,3 +9,8 @@ type ResetPasswordRequest struct {
 	Token       string `json:"token" binding:"required"`
 	NewPassword string `json:"new_password" binding:"required,min=6"`
 }
+
+type ForgotPasswordResponse struct {
+	Message string `json:"message"`
+	Token   string `json:"token"`
+}

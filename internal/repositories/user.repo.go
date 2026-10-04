@@ -275,3 +275,27 @@ func (r *UserRepository) UpdatePassword(userID uint, password string) error {
 	)
 	return err
 }
+
+func (r *UserRepository) UpdateProfile(userID uint, request dto.UpdateProfileRequest) error {
+
+	query := `
+	UPDATE users
+	SET 
+		name=$1,
+		avatar_url=$2,
+		location=$3,
+		bio=$4,
+		update_at=now()
+	WHERE user_id=$5`
+
+	_, err := r.DB.Exec(
+		context.Background(),
+		query,
+		request.Name,
+		request.AvatarURL,
+		request.Location,
+		request.Bio,
+		userID,
+	)
+	return err
+}

@@ -18,6 +18,7 @@ func NewEventService(
 	}
 }
 
+// get events
 func (s *EventService) GetEvents(
 	search string,
 	format string,
@@ -34,6 +35,7 @@ func (s *EventService) GetEvents(
 	return events, nil
 }
 
+// event detail
 func (s *EventService) GetEventDetail(
 	id uint,
 ) (*models.Event, error) {
@@ -45,4 +47,16 @@ func (s *EventService) GetEventDetail(
 	}
 
 	return event, nil
+}
+
+// upcoming events
+func (s *EventService) GetUpcomingEvents() ([]models.Event, error) {
+
+	return s.EventRepo.GetUpcomingEvents()
+}
+
+// get myevents
+func (s *EventService) GetMyEvents(UserID uint) ([]models.Event, error) {
+
+	return s.EventRepo.GetMyEvents(UserID)
 }

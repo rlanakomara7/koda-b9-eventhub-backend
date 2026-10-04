@@ -15,3 +15,15 @@ type ProfileStats struct {
 	Communities int `json:"communities"`
 	Saved       int `json:"saved"`
 }
+
+type ProfileSuccessResponse struct {
+	Message string          `json:"message"`
+	Data    ProfileResponse `json:"data"`
+}
+
+type UpdateProfileRequest struct {
+	Name      string `json:"name" binding:"required"`
+	AvatarURL string `json:"avatar_url"`
+	Location  string `json:"location"`
+	Bio       string `json:"bio"`
+}

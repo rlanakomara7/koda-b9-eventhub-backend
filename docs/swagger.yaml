@@ -1,11 +1,109 @@
 basePath: /
 definitions:
-  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse:
+  dto.AuthUserResponse:
+    properties:
+      avatar_url:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+    type: object
+  dto.ErrorResponse:
     properties:
       message:
         type: string
     type: object
-  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.RegisterRequest:
+  dto.EventDetailSuccessResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.Event'
+    type: object
+  dto.EventListNotFoundResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Event'
+        type: array
+      message:
+        type: string
+    type: object
+  dto.EventListSuccessResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Event'
+        type: array
+    type: object
+  dto.ForgotPasswordRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  dto.ForgotPasswordResponse:
+    properties:
+      message:
+        type: string
+      token:
+        type: string
+    type: object
+  dto.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  dto.LoginResponse:
+    properties:
+      message:
+        type: string
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/dto.AuthUserResponse'
+    type: object
+  dto.ProfileResponse:
+    properties:
+      avatar_url:
+        type: string
+      bio:
+        type: string
+      email:
+        type: string
+      joined_at:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+      stats:
+        $ref: '#/definitions/dto.ProfileStats'
+    type: object
+  dto.ProfileStats:
+    properties:
+      communities:
+        type: integer
+      events:
+        type: integer
+      saved:
+        type: integer
+    type: object
+  dto.ProfileSuccessResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.ProfileResponse'
+      message:
+        type: string
+    type: object
+  dto.RegisterRequest:
     properties:
       email:
         type: string
@@ -19,10 +117,70 @@ definitions:
     - name
     - password
     type: object
-  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response:
+  dto.ResetPasswordRequest:
+    properties:
+      email:
+        type: string
+      new_password:
+        minLength: 6
+        type: string
+      token:
+        type: string
+    required:
+    - email
+    - new_password
+    - token
+    type: object
+  dto.Response:
     properties:
       message:
         type: string
+    type: object
+  dto.UpdateProfileRequest:
+    properties:
+      avatar_url:
+        type: string
+      bio:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  models.Event:
+    properties:
+      banner_url:
+        type: string
+      capacity:
+        type: integer
+      community_id:
+        type: integer
+      created_at:
+        type: string
+      description:
+        type: string
+      end_time:
+        type: string
+      event_date:
+        type: string
+      event_id:
+        type: integer
+      format:
+        type: string
+      location:
+        type: string
+      start_time:
+        type: string
+      status:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
     type: object
 host: localhost:9000
 info:
@@ -31,6 +189,83 @@ info:
   title: KODA EventHub API
   version: "1.0"
 paths:
+  /api/auth/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Create reset password token
+      parameters:
+      - description: Forgot password data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ForgotPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ForgotPasswordResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Forgot Password
+      tags:
+      - auth
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login user and generate access token
+      parameters:
+      - description: Login data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Login
+      tags:
+      - auth
+  /api/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logout user and Blacklist access token
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Logout
+      tags:
+      - auth
   /api/auth/register:
     post:
       consumes:
@@ -42,25 +277,260 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.RegisterRequest'
+          $ref: '#/definitions/dto.RegisterRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
+            $ref: '#/definitions/dto.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+            $ref: '#/definitions/dto.ErrorResponse'
       summary: Register Account
       tags:
       - auth
+  /api/auth/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: Reset user password using reset token
+      parameters:
+      - description: Reset password data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Reset Password
+      tags:
+      - auth
+  /api/events:
+    get:
+      description: Get event list with optional search and format filter
+      parameters:
+      - description: Search event by title
+        in: query
+        name: search
+        type: string
+      - description: 'Filter event format: in_person or online'
+        in: query
+        name: format
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.EventListSuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.EventListNotFoundResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Get Events
+      tags:
+      - events
+  /api/events/{id}:
+    get:
+      description: Get event detail by event ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.EventDetailSuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Get Event Detail
+      tags:
+      - events
+  /api/events/{id}/join:
+    post:
+      description: Join an event for currently logged in user
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Join Event
+      tags:
+      - events
+  /api/events/{id}/leave:
+    delete:
+      description: Leave an event for currently logged in user
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Leave Event
+      tags:
+      - events
+  /api/events/my:
+    get:
+      description: Get events joined by currently logged in user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.EventListSuccessResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Get My Events
+      tags:
+      - events
+  /api/events/upcoming:
+    get:
+      description: Get list of upcoming events
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.EventListSuccessResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Get Upcoming Events
+      tags:
+      - events
+  /api/profile:
+    get:
+      description: Get profile of currently logged in user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ProfileSuccessResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Get Profile
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: Update profile of currently logged in user
+      parameters:
+      - description: Profile data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ProfileSuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Update Profile
+      tags:
+      - user
 securityDefinitions:
   BearerToken:
     description: Bearer Token used as identity for accessing backend

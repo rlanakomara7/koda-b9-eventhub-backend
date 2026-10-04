@@ -18,7 +18,7 @@ func EventRoutes(
 
 	// public
 	event.GET("", handler.GetEvents)
-
+	event.GET("/upcoming", handler.GetUpcomingEvents)
 	event.GET("/:id", handler.GetEventDetail)
 
 	// protected
@@ -27,14 +27,10 @@ func EventRoutes(
 	protected.Use(middleware.AuthMiddleware(tokenRepo))
 
 	{
-		protected.POST(
-			"/:id/join",
-			memberHandler.JoinEvent,
-		)
+		protected.POST("/:id/join", memberHandler.JoinEvent)
 
-		protected.DELETE(
-			"/:id/leave",
-			memberHandler.LeaveEvent,
-		)
+		protected.DELETE("/:id/leave", memberHandler.LeaveEvent)
+
+		protected.GET("/my", handler.GetMyEvents)
 	}
 }

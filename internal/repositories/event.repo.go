@@ -289,3 +289,140 @@ func (r *EventRepository) GetEventDetail(
 
 	return detail, nil
 }
+
+// get upcoming events
+func (r *EventRepository) GetUpcomingEvents() ([]models.Event, error) {
+	query := `
+	SELECT
+		event_id,
+		user_id,
+		community_id,
+		title,
+		description,
+		banner_url,
+		event_date,
+		start_time,
+		end_time,
+		format,
+		location,
+		capacity,
+		status,
+		created_at,
+		updated_at
+	FROM events
+	WHERE event_date >= CURRENT_DATE
+	AND status != 'completed'
+	ORDER BY event_date ASC, start_time ASC
+	`
+
+	rows, err := r.DB.Query(
+		context.Background(),
+		query,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	events := []models.Event{}
+
+	for rows.Next() {
+		var event models.Event
+
+		err := rows.Scan(
+			&event.EventID,
+			&event.UserID,
+			&event.CommunityID,
+			&event.Title,
+			&event.Description,
+			&event.BannerURL,
+			&event.EventDate,
+			&event.StartTime,
+			&event.EndTime,
+			&event.Format,
+			&event.Location,
+			&event.Capacity,
+			&event.Status,
+			&event.CreatedAt,
+			&event.UpdatedAt,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		events = append(events, event)
+	}
+	return events, nil
+}
+
+// get my event
+func (r *EventRepository) GetMyEvents(userID uint) ([]models.Event, error) {
+	query := `
+	SELECT
+		e.event_id,
+		e.user_id,
+		e.community_id,
+		e.title,
+		e.description,
+		e.banner_url,
+		e.event_date,
+		e.start_time,
+		e.end_time,
+		e.format,
+		e.location,
+		e.capacity,
+		e.status,
+		e.created_at,
+		e.updated_at
+	FROM events e
+	JOIN event_members em
+	ON e.event_id = em.event_id
+	WHERE em.user_id = $1
+	ORDER BY e.event_date ASC
+	`
+
+	rows, err := r.DB.Query(
+		context.Background(),
+		query,
+		userID,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	events := []models.Event{}
+
+	for rows.Next() {
+		var event models.Event
+
+		err := rows.Scan(
+			&event.EventID,
+			&event.UserID,
+			&event.CommunityID,
+			&event.Title,
+			&event.Description,
+			&event.BannerURL,
+			&event.EventDate,
+			&event.StartTime,
+			&event.EndTime,
+			&event.Format,
+			&event.Location,
+			&event.Capacity,
+			&event.Status,
+			&event.CreatedAt,
+			&event.UpdatedAt,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+		events = append(events, event)
+	}
+	return events, nil
+}

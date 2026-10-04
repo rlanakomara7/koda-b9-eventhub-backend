@@ -1,17 +1,16 @@
 package dto
 
+import "github.com/rlanakomara7/koda-b9-eventhub-backend/internal/models"
+
 type OrganizerResponse struct {
-	UserID uint `json:"user_id"`
-
-	Name string `json:"name"`
-
-	Email string `json:"email"`
+	UserID uint   `json:"user_id"`
+	Name   string `json:"name"`
+	Email  string `json:"email"`
 }
 
 type CommunityResponse struct {
-	CommunityID uint `json:"community_id"`
-
-	Name string `json:"name"`
+	CommunityID uint   `json:"community_id"`
+	Name        string `json:"name"`
 }
 
 type EventDetailResponse struct {
@@ -32,15 +31,23 @@ type EventDetailResponse struct {
 }
 
 type EventInfoResponse struct {
-	Date string `json:"date"`
+	Date       string `json:"date"`
+	Time       string `json:"time"`
+	Location   string `json:"location"`
+	Capacity   int    `json:"capacity"`
+	Registered int    `json:"registered"`
+	SpotsLeft  int    `json:"spots_left"`
+}
 
-	Time string `json:"time"`
+type EventListSuccessResponse struct {
+	Data []models.Event `json:"data"`
+}
 
-	Location string `json:"location"`
+type EventListNotFoundResponse struct {
+	Data    []models.Event `json:"data"`
+	Message string         `json:"message"`
+}
 
-	Capacity int `json:"capacity"`
-
-	Registered int `json:"registered"`
-
-	SpotsLeft int `json:"spots_left"`
+type EventDetailSuccessResponse struct {
+	Data *models.Event `json:"data"`
 }

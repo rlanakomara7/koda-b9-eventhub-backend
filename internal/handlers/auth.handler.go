@@ -35,7 +35,6 @@ func NewAuthHandler(service *services.AuthService, tokenRepo *repositories.Token
 // @Param			request 	body dto.RegisterRequest 	true 	"Register data"
 // @Success			201			{object}		dto.Response
 // @Failure			400			{object}		dto.ErrorResponse
-// @Failure			500			{object}		dto.ErrorResponse
 // @Router 			/api/auth/register [post]
 func (h *AuthHandler) Register(c *gin.Context) {
 
@@ -77,7 +76,18 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	)
 }
 
-// login
+// Login
+//
+// @Summary			Login
+// @Description		Login user and generate access token
+// @Tags			auth
+// @Accept			json
+// @Produce			json
+// @Param			request 	body dto.LoginRequest 	true 	"Login data"
+// @Success			200			{object}		dto.LoginResponse
+// @Failure			400			{object}		dto.ErrorResponse
+// @Failure      	401 		{object} 		dto.ErrorResponse
+// @Router 			/api/auth/login [post]
 func (h *AuthHandler) Login(c *gin.Context) {
 
 	var request dto.LoginRequest
@@ -114,8 +124,17 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-//logout
-
+// Logout
+//
+// @Summary			Logout
+// @Description		Logout user and Blacklist access token
+// @Tags			auth
+// @Accept			json
+// @Produce			json
+// @Security     	BearerToken
+// @Success			204			{string}		string "No Content"
+// @Failure			500			{object}		dto.ErrorResponse
+// @Router 			/api/auth/logout [post]
 func (h *AuthHandler) Logout(c *gin.Context) {
 
 	authHeader := c.GetHeader("Authorization")
@@ -139,7 +158,17 @@ func (h *AuthHandler) Logout(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
-// forgotpassword
+// Forgot Password
+//
+// @Summary      Forgot Password
+// @Description  Create reset password token
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        request body dto.ForgotPasswordRequest true "Forgot password data"
+// @Success      200 {object} dto.ForgotPasswordResponse
+// @Failure      400 {object} dto.ErrorResponse
+// @Router       /api/auth/forgot-password [post]
 func (h *AuthHandler) ForgotPassword(c *gin.Context) {
 
 	var request dto.ForgotPasswordRequest
@@ -175,7 +204,17 @@ func (h *AuthHandler) ForgotPassword(c *gin.Context) {
 
 }
 
-// handler password
+// Reset Password
+//
+// @Summary      Reset Password
+// @Description  Reset user password using reset token
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        request body dto.ResetPasswordRequest true "Reset password data"
+// @Success      200 {object} dto.Response
+// @Failure      400 {object} dto.ErrorResponse
+// @Router       /api/auth/reset-password [post]
 func (h *AuthHandler) ResetPassword(c *gin.Context) {
 
 	var request dto.ResetPasswordRequest
