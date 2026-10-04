@@ -1,0 +1,8 @@
+$kind: http-request
+name: http://localhost:9000/api/events?search=
+description: ""
+url: http://localhost:9000/api/events?search=
+method: GET
+queryParams:
+  search: ""
+order: 4490674697965920

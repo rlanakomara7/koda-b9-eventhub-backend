@@ -1,0 +1,15 @@
+$kind: http-request
+name: http://localhost:9000/api/profile
+description: ""
+url: http://localhost:9000/api/profile
+method: PUT
+headers:
+  Origin: http://localhost:5500
+body:
+  type: json
+  content: ""
+auth:
+  type: bearer
+  credentials:
+    token: ""
+order: 3672748361458782

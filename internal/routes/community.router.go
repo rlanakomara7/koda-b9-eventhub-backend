@@ -7,7 +7,11 @@ import (
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/repositories"
 )
 
-func CommunityRoutes(router *gin.Engine, handler *handlers.CommunityHandler, tokenRepo *repositories.TokenRepository) {
+func CommunityRoutes(
+	router *gin.Engine,
+	handler *handlers.CommunityHandler,
+	memberHandler *handlers.CommunityMemberHandler,
+	tokenRepo *repositories.TokenRepository) {
 
 	community := router.Group("/api/communities")
 
@@ -15,5 +19,9 @@ func CommunityRoutes(router *gin.Engine, handler *handlers.CommunityHandler, tok
 
 	{
 		community.GET("", handler.GetCommunities)
+
+		community.POST("/:id/join", memberHandler.JoinCommunity)
+
+		community.DELETE("/:id/leave", memberHandler.LeaveCommunity)
 	}
 }

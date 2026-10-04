@@ -1,0 +1,7 @@
+$kind: http-request
+name: http://localhost:9000/api/events?format=
+url: http://localhost:9000/api/events?format=online
+method: GET
+queryParams:
+  format: online
+order: 4502902378076186

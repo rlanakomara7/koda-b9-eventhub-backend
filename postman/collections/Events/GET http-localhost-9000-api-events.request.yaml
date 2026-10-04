@@ -1,0 +1,6 @@
+$kind: http-request
+name: GET http://localhost:9000/api/events
+description: ""
+url: GET http://localhost:9000/api/events
+method: GET
+order: 1791118032125

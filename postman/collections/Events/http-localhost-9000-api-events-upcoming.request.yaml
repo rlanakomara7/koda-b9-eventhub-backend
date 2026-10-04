@@ -1,0 +1,5 @@
+$kind: http-request
+name: http://localhost:9000/api/events/upcoming
+url: http://localhost:9000/api/events/upcoming
+method: GET
+order: 4503260472776922

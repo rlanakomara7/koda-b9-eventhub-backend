@@ -46,28 +46,28 @@ func (h *CommunityHandler) GetCommunities(c *gin.Context) {
 			},
 		)
 		return
+	}
 
-		communities, err := h.Service.GetCommunities(
-			search,
-			category,
-			userID,
-		)
+	communities, err := h.Service.GetCommunities(
+		search,
+		category,
+		userID,
+	)
 
-		if err != nil {
-			c.JSON(
-				http.StatusInternalServerError,
-				dto.ErrorResponse{
-					Message: err.Error(),
-				},
-			)
-			return
-		}
-
+	if err != nil {
 		c.JSON(
-			http.StatusOK,
-			dto.CommunityListResponse{
-				Data: communities,
+			http.StatusInternalServerError,
+			dto.ErrorResponse{
+				Message: err.Error(),
 			},
 		)
+		return
 	}
+
+	c.JSON(
+		http.StatusOK,
+		dto.CommunityListResponse{
+			Data: communities,
+		},
+	)
 }

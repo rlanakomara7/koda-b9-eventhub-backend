@@ -1,0 +1,12 @@
+$kind: http-request
+name: http://localhost:9000/api/communities?categories=
+description: ""
+url: http://localhost:9000/api/communities?category=Technology
+method: GET
+queryParams:
+  category: Technology
+auth:
+  type: bearer
+  credentials:
+    token: ""
+order: 1791119186889

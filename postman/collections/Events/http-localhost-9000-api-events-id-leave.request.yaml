@@ -1,0 +1,10 @@
+$kind: http-request
+name: http://localhost:9000/api/events/:id/leave
+description: ""
+url: http://localhost:9000/api/events/1/leave
+method: DELETE
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_1878}}"
+order: 2212948822836533

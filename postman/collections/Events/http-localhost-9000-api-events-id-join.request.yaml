@@ -1,0 +1,13 @@
+$kind: http-request
+name: http://localhost:9000/api/events/:id/join
+description: ""
+url: http://localhost:9000/api/events/1/join
+method: POST
+body:
+  type: json
+  content: ""
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_15fz}}"
+order: 4457683163699128

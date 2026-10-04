@@ -1,0 +1,7 @@
+$kind: http-request
+name: http://localhost:9000/api/communities?search=
+url: http://localhost:9000/api/communities?search=
+method: GET
+queryParams:
+  search: ""
+order: 3532738866734468

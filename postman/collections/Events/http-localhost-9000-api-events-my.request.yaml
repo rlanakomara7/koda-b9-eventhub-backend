@@ -1,0 +1,10 @@
+$kind: http-request
+name: http://localhost:9000/api/events/my
+description: ""
+url: http://localhost:9000/api/events/my
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_00ag}}"
+order: 4502185708171012

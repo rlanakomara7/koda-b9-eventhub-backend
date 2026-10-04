@@ -1,0 +1,13 @@
+$kind: http-request
+name: http://localhost:9000/api/auth/logout
+description: ""
+url: http://localhost:9000/api/auth/logout
+method: POST
+body:
+  type: json
+  content: ""
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_1bbu}}"
+order: 4024287396045365
