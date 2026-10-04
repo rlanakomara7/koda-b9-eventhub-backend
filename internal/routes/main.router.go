@@ -39,11 +39,14 @@ func InitMainRouter(db *pgxpool.Pool, redisClient *redis.Client) *gin.Engine {
 	eventService := services.NewEventService(eventRepo)
 	eventHandler := handlers.NewEventHandler(eventService)
 
+	//community
+	communityRepo := repositories.NewCommunityRepository(db)
+	communtiyService := services.NewCommunityService(communityRepo)
+	communtiyHandler := handlers.NewCommunityHandler(communtiyService)
+
 	//event member
 	eventMemberRepo := repositories.NewEventMemberRepository(db)
-
 	eventMemberService := services.NewEventMemberService(eventMemberRepo)
-
 	eventMemberHandler := handlers.NewEventMemberHandler(eventMemberService)
 
 	EventRoutes(router, eventHandler, eventMemberHandler, tokenRepo)
@@ -53,6 +56,8 @@ func InitMainRouter(db *pgxpool.Pool, redisClient *redis.Client) *gin.Engine {
 
 	//route
 	AuthRoutes(router, authHandler)
+
+	CommunityRoutes(router, communtiyHandler, tokenRepo)
 
 	return router
 }

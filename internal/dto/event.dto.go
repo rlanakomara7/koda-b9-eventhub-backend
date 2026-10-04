@@ -8,11 +8,6 @@ type OrganizerResponse struct {
 	Email  string `json:"email"`
 }
 
-type CommunityResponse struct {
-	CommunityID uint   `json:"community_id"`
-	Name        string `json:"name"`
-}
-
 type EventDetailResponse struct {
 	EventID         uint               `json:"event_id"`
 	Title           string             `json:"title"`
