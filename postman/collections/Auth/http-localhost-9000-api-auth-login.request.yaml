@@ -5,11 +5,5 @@ url: http://localhost:9000/api/auth/login
 method: POST
 body:
   type: json
-  content: "{\r
-
-    \    \"email\":\"Bani@mail.com\",\r
-
-    \    \"password\":\"12345678\"\r
-
-    }"
+  content: ""
 order: 2473730381054133

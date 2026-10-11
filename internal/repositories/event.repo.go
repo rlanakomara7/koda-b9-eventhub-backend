@@ -862,27 +862,22 @@ func (r *EventRepository) GetMyEvents(
 ) ([]dto.MyEventResponse, error) {
 
 	query := `
-	SELECT
-		e.event_id,
-		e.community_id,
-		e.title,
-		e.description,
-		e.banner_url,
-		e.event_date,
-		e.start_time,
-		e.end_time,
-		e.format,
-		e.location,
-		e.capacity,
-		e.status
-	FROM events e
-
-	JOIN event_members em
-	ON e.event_id = em.event_id
-
-	WHERE em.user_id = $1
-
-	ORDER BY e.event_date ASC
+		SELECT
+			e.event_id,
+			e.community_id,
+			e.title,
+			e.description,
+			e.banner_url,
+			e.event_date,
+			e.start_time,
+			e.end_time,
+			e.format,
+			e.location,
+			e.capacity,
+			e.status
+		FROM events e
+		WHERE e.user_id = $1
+		ORDER BY e.event_date ASC
 	`
 
 	rows, err := r.DB.Query(
@@ -890,18 +885,16 @@ func (r *EventRepository) GetMyEvents(
 		query,
 		userID,
 	)
-
 	if err != nil {
 		return nil, err
 	}
-
 	defer rows.Close()
 
 	events := []dto.MyEventResponse{}
 
 	for rows.Next() {
-
 		var event dto.MyEventResponse
+
 		var communityID sql.NullInt64
 		var description sql.NullString
 		var bannerURL sql.NullString
@@ -913,19 +906,18 @@ func (r *EventRepository) GetMyEvents(
 
 		err := rows.Scan(
 			&event.EventID,
-			&event.CommunityID,
+			&communityID,
 			&event.Title,
-			&event.Description,
-			&event.BannerURL,
+			&description,
+			&bannerURL,
 			&eventDate,
 			&startTime,
 			&endTime,
 			&event.Format,
-			&event.Location,
+			&location,
 			&event.Capacity,
 			&event.Status,
 		)
-
 		if err != nil {
 			return nil, err
 		}
@@ -960,6 +952,10 @@ func (r *EventRepository) GetMyEvents(
 		}
 
 		events = append(events, event)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
 	}
 
 	return events, nil

@@ -1,0 +1,5 @@
+$kind: http-request
+name: http://localhost:9000/api/communities/1/leave
+url: http://localhost:9000//api/communities/1/leave
+method: DELETE
+order: 4121275113822194

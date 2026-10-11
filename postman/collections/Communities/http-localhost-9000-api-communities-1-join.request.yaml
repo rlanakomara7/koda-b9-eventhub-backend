@@ -1,4 +1,5 @@
 $kind: http-request
+name: http://localhost:9000/api/communities/1/join
 url: ""
 method: GET
 order: 3753149873999369
