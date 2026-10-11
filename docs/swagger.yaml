@@ -304,6 +304,13 @@ definitions:
       message:
         type: string
     type: object
+  dto.UpdateEventResponse:
+    properties:
+      event_id:
+        type: integer
+      message:
+        type: string
+    type: object
   models.Event:
     properties:
       banner_url:
@@ -717,6 +724,111 @@ paths:
           schema:
             $ref: '#/definitions/dto.ErrorResponse'
       summary: Get Event Detail
+      tags:
+      - events
+    patch:
+      consumes:
+      - multipart/form-data
+      description: Update an event owned by the authenticated organizer. Send all
+        form fields; banner is optional.
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Event title
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: Description
+        in: formData
+        name: description
+        type: string
+      - description: Existing category name
+        in: formData
+        name: category
+        required: true
+        type: string
+      - description: Community ID
+        in: formData
+        name: community_id
+        type: integer
+      - description: YYYY-MM-DD
+        in: formData
+        name: event_date
+        required: true
+        type: string
+      - description: HH:MM
+        in: formData
+        name: start_time
+        required: true
+        type: string
+      - description: HH:MM
+        in: formData
+        name: end_time
+        required: true
+        type: string
+      - description: online or in_person
+        in: formData
+        name: format
+        required: true
+        type: string
+      - description: Location
+        in: formData
+        name: location
+        type: string
+      - description: Capacity
+        in: formData
+        name: capacity
+        required: true
+        type: integer
+      - collectionFormat: multi
+        description: Speaker names
+        in: formData
+        items:
+          type: string
+        name: speakers
+        type: array
+      - description: New banner (optional)
+        in: formData
+        name: banner
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UpdateEventResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Update Event
       tags:
       - events
   /api/events/{id}/join:
