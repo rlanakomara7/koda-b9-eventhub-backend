@@ -33,6 +33,8 @@ func EventRoutes(
 
 		protected.PATCH("/:id", handler.UpdateEvent)
 
+		protected.DELETE("/:id", handler.DeleteEvent)
+
 		protected.POST("/:id/join", memberHandler.JoinEvent)
 
 		protected.DELETE("/:id/leave", memberHandler.LeaveEvent)
