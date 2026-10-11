@@ -118,6 +118,7 @@ func (h *AuthHandler) Login(c *gin.Context) {
 			Name:      user.Name,
 			Email:     user.Email,
 			AvatarURL: user.AvatarURL,
+			Role:      user.Role,
 		},
 	}
 
@@ -145,6 +146,9 @@ func (h *AuthHandler) Logout(c *gin.Context) {
 			"Bearer ",
 		),
 	)
+
+	//debug
+	println("TOKEN LOGOUT:", token)
 
 	err := h.TokenRepo.TokenBlackList(token)
 

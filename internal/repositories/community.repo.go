@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/dto"
@@ -24,32 +25,41 @@ func (r *CommunityRepository) GetCommunities(
 ) ([]dto.CommunityResponse, error) {
 
 	query := `
-	SELECT
-		community_id,
-		name,
-		description,
-		banner_url
-	FROM communities
-	WHERE status = 'active'
-	`
+SELECT DISTINCT
+    c.community_id,
+    c.name,
+    COALESCE(c.description, ''),
+    COALESCE(c.banner_url, ''),
+    cm.user_id IS NOT NULL AS is_joined
+FROM communities c
+LEFT JOIN community_members cm
+    ON cm.community_id = c.community_id
+    AND cm.user_id = $3
+LEFT JOIN community_category_mappings ccm
+    ON ccm.community_id = c.community_id
+LEFT JOIN community_categories cc
+    ON cc.category_id = ccm.category_id
+WHERE c.status = 'active'
+AND (
+    $1 = ''
+    OR c.name ILIKE '%' || $1 || '%'
+)
+AND (
+    $2 = ''
+    OR cc.category_name ILIKE '%' || $2 || '%'
+)
+ORDER BY c.name ASC
+`
 
-	args := []interface{}{}
-
-	if search != "" {
-		args = append(
-			args,
-			"%"+search+"%",
-		)
-
-		query += `AND name ILIKE $1`
-	}
-
-	query += `ORDER BY name ASC`
+	fmt.Println("QUERY COMMUNITY:")
+	fmt.Println(query)
 
 	rows, err := r.DB.Query(
 		context.Background(),
 		query,
-		args...,
+		search,
+		category,
+		userID,
 	)
 
 	if err != nil {
@@ -64,143 +74,26 @@ func (r *CommunityRepository) GetCommunities(
 
 		var community dto.CommunityResponse
 
-		var description *string
-		var bannerURL *string
-
 		err := rows.Scan(
 			&community.CommunityID,
 			&community.Name,
-			&description,
-			&bannerURL,
+			&community.Description,
+			&community.BannerURL,
+			&community.IsJoined,
 		)
 
 		if err != nil {
 			return nil, err
 		}
-
-		if description != nil {
-			community.Description = *description
-		}
-
-		if bannerURL != nil {
-			community.BannerURL = *bannerURL
-		}
-
-		categoryRows, err := r.DB.Query(
-			context.Background(),
-			`
-			SELECT cc.category_name
-			FROM community_categories cc
-			JOIN community_category_mappings ccm
-				ON cc.category_id = ccm.category_id
-			WHERE ccm.community_id = $1
-			`,
-			community.CommunityID,
-		)
-
-		if err != nil {
-			return nil, err
-		}
-
-		community.Categories = []string{}
-
-		for categoryRows.Next() {
-
-			var categoryName string
-
-			err := categoryRows.Scan(
-				&categoryName,
-			)
-
-			if err != nil {
-				categoryRows.Close()
-				return nil, err
-			}
-
-			community.Categories = append(
-				community.Categories,
-				categoryName,
-			)
-		}
-
-		categoryRows.Close()
-
-		if category != "" {
-
-			found := false
-
-			for _, categoryName := range community.Categories {
-				if categoryName == category {
-					found = true
-					break
-				}
-			}
-
-			if !found {
-				continue
-			}
-		}
-
-		err = r.DB.QueryRow(
-			context.Background(),
-			`
-			SELECT COUNT(*)
-			FROM community_members
-			WHERE community_id = $1
-			`,
-			community.CommunityID,
-		).Scan(
-			&community.MemberCount,
-		)
-
-		if err != nil {
-			return nil, err
-		}
-
-		err = r.DB.QueryRow(
-			context.Background(),
-			`
-			SELECT COUNT(*)
-			FROM events
-			WHERE community_id = $1
-			AND event_date >= CURRENT_DATE
-			AND status != 'completed'
-			`,
-			community.CommunityID,
-		).Scan(
-			&community.UpcomingCount,
-		)
-
-		if err != nil {
-			return nil, err
-		}
-
-		var joinedCount int
-
-		err = r.DB.QueryRow(
-			context.Background(),
-			`
-			SELECT COUNT(*)
-			FROM community_members
-			WHERE community_id = $1
-			AND user_id = $2
-			`,
-			community.CommunityID,
-			userID,
-		).Scan(
-			&joinedCount,
-		)
-
-		if err != nil {
-			return nil, err
-		}
-
-		community.IsJoined = joinedCount > 0
 
 		communities = append(
 			communities,
 			community,
 		)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
 	}
 
 	return communities, nil

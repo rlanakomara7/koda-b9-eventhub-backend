@@ -25,7 +25,7 @@ func NewCommunityHandler(services *services.CommunityService) *CommunityHandler 
 // @Tags         communities
 // @Produce      json
 // @Security	 BearerToken
-// @Param        search query string false "Search community by name"
+// @Param        search query string false "Search community"
 // @Param        category query string false "Filter community by category"
 // @Success      200 {object} dto.CommunityListResponse
 // @Failure      401 {object} dto.ErrorResponse
@@ -35,18 +35,7 @@ func (h *CommunityHandler) GetCommunities(c *gin.Context) {
 
 	search := c.Query("search")
 	category := c.Query("category")
-
 	userID := c.GetUint("user_id")
-
-	if userID == 0 {
-		c.JSON(
-			http.StatusUnauthorized,
-			dto.ErrorResponse{
-				Message: "unauthorized",
-			},
-		)
-		return
-	}
 
 	communities, err := h.Service.GetCommunities(
 		search,
@@ -55,19 +44,16 @@ func (h *CommunityHandler) GetCommunities(c *gin.Context) {
 	)
 
 	if err != nil {
-		c.JSON(
-			http.StatusInternalServerError,
-			dto.ErrorResponse{
-				Message: err.Error(),
-			},
-		)
+		_ = c.Error(err)
+
+		c.JSON(http.StatusInternalServerError, dto.ErrorResponse{
+			Message: "failed to get communities",
+		})
 		return
 	}
 
-	c.JSON(
-		http.StatusOK,
-		dto.CommunityListResponse{
-			Data: communities,
-		},
+	c.JSON(http.StatusOK, dto.CommunityListResponse{
+		Data: communities,
+	},
 	)
 }

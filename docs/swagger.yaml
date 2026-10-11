@@ -8,16 +8,126 @@ definitions:
         type: string
       name:
         type: string
+      role:
+        type: string
+    type: object
+  dto.CommunityListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.CommunityResponse'
+        type: array
+    type: object
+  dto.CommunityResponse:
+    properties:
+      banner_url:
+        type: string
+      categories:
+        items:
+          type: string
+        type: array
+      community_id:
+        type: integer
+      description:
+        type: string
+      is_joined:
+        type: boolean
+      member_count:
+        type: integer
+      name:
+        type: string
+      upcoming_count:
+        type: integer
+    type: object
+  dto.CreateEventResponse:
+    properties:
+      event_id:
+        type: integer
+      message:
+        type: string
     type: object
   dto.ErrorResponse:
     properties:
       message:
         type: string
     type: object
+  dto.EventCommunityResponse:
+    properties:
+      community_id:
+        type: integer
+      name:
+        type: string
+    type: object
+  dto.EventDetailResponse:
+    properties:
+      availability:
+        type: string
+      banner_url:
+        type: string
+      capacity:
+        type: integer
+      categories:
+        items:
+          type: string
+        type: array
+      community:
+        $ref: '#/definitions/dto.EventCommunityResponse'
+      description:
+        type: string
+      discussion_count:
+        type: integer
+      discussions:
+        items:
+          $ref: '#/definitions/dto.EventDiscussionResponse'
+        type: array
+      end_time:
+        type: string
+      event_date:
+        type: string
+      event_id:
+        type: integer
+      format:
+        type: string
+      is_joined:
+        type: boolean
+      is_saved:
+        type: boolean
+      location:
+        type: string
+      organizer:
+        $ref: '#/definitions/dto.OrganizerResponse'
+      registered:
+        type: integer
+      speakers:
+        items:
+          $ref: '#/definitions/dto.EventSpeakerResponse'
+        type: array
+      spots_left:
+        type: integer
+      start_time:
+        type: string
+      title:
+        type: string
+    type: object
   dto.EventDetailSuccessResponse:
     properties:
       data:
-        $ref: '#/definitions/models.Event'
+        $ref: '#/definitions/dto.EventDetailResponse'
+    type: object
+  dto.EventDiscussionResponse:
+    properties:
+      avatar_url:
+        type: string
+      created_at:
+        type: string
+      discussion_id:
+        type: integer
+      message:
+        type: string
+      name:
+        type: string
+      user_id:
+        type: integer
     type: object
   dto.EventListNotFoundResponse:
     properties:
@@ -34,6 +144,19 @@ definitions:
         items:
           $ref: '#/definitions/models.Event'
         type: array
+    type: object
+  dto.EventSpeakerResponse:
+    properties:
+      avatar_url:
+        type: string
+      company:
+        type: string
+      job:
+        type: string
+      name:
+        type: string
+      speaker_id:
+        type: integer
     type: object
   dto.ForgotPasswordRequest:
     properties:
@@ -67,6 +190,49 @@ definitions:
         type: string
       user:
         $ref: '#/definitions/dto.AuthUserResponse'
+    type: object
+  dto.MyEventListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.MyEventResponse'
+        type: array
+    type: object
+  dto.MyEventResponse:
+    properties:
+      banner_url:
+        type: string
+      capacity:
+        type: integer
+      community_id:
+        type: integer
+      description:
+        type: string
+      end_time:
+        type: string
+      event_date:
+        type: string
+      event_id:
+        type: integer
+      format:
+        type: string
+      location:
+        type: string
+      start_time:
+        type: string
+      status:
+        type: string
+      title:
+        type: string
+    type: object
+  dto.OrganizerResponse:
+    properties:
+      avatar_url:
+        type: string
+      name:
+        type: string
+      user_id:
+        type: integer
     type: object
   dto.ProfileResponse:
     properties:
@@ -108,9 +274,11 @@ definitions:
       email:
         type: string
       name:
+        maxLength: 100
+        minLength: 2
         type: string
       password:
-        minLength: 6
+        minLength: 8
         type: string
     required:
     - email
@@ -135,19 +303,6 @@ definitions:
     properties:
       message:
         type: string
-    type: object
-  dto.UpdateProfileRequest:
-    properties:
-      avatar_url:
-        type: string
-      bio:
-        type: string
-      location:
-        type: string
-      name:
-        type: string
-    required:
-    - name
     type: object
   models.Event:
     properties:
@@ -182,7 +337,7 @@ definitions:
       user_id:
         type: integer
     type: object
-host: localhost:9000
+host: localhost:8500
 info:
   contact: {}
   description: Backend for EventHub Application
@@ -318,6 +473,96 @@ paths:
       summary: Reset Password
       tags:
       - auth
+  /api/communities:
+    get:
+      description: Get community list with search and category filter
+      parameters:
+      - description: Search community
+        in: query
+        name: search
+        type: string
+      - description: Filter community by category
+        in: query
+        name: category
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CommunityListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Get Communities
+      tags:
+      - communities
+  /api/communities/{id}/join:
+    post:
+      description: Join community for currently logged in user
+      parameters:
+      - description: Community ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Join Community
+      tags:
+      - communities
+  /api/communities/{id}/leave:
+    delete:
+      description: Leave community for currently logged in user
+      parameters:
+      - description: Community ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Leave Community
+      tags:
+      - communities
   /api/events:
     get:
       description: Get event list with optional search and format filter
@@ -348,6 +593,101 @@ paths:
       summary: Get Events
       tags:
       - events
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create an event as an organizer with optional banner upload
+      parameters:
+      - description: Event title
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: Description
+        in: formData
+        name: description
+        type: string
+      - description: Existing event category name
+        in: formData
+        name: category
+        required: true
+        type: string
+      - description: Community ID
+        in: formData
+        name: community_id
+        type: integer
+      - description: YYYY-MM-DD
+        in: formData
+        name: event_date
+        required: true
+        type: string
+      - description: HH:MM
+        in: formData
+        name: start_time
+        required: true
+        type: string
+      - description: HH:MM
+        in: formData
+        name: end_time
+        required: true
+        type: string
+      - description: online or in_person
+        in: formData
+        name: format
+        required: true
+        type: string
+      - description: Location
+        in: formData
+        name: location
+        type: string
+      - description: Capacity
+        in: formData
+        name: capacity
+        required: true
+        type: integer
+      - collectionFormat: multi
+        description: Speaker names
+        in: formData
+        items:
+          type: string
+        name: speakers
+        type: array
+      - description: Event banner (jpg, jpeg, png, webp, maximum 2MB)
+        in: formData
+        name: banner
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.CreateEventResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Create Event
+      tags:
+      - events
   /api/events/{id}:
     get:
       description: Get event detail by event ID
@@ -370,6 +710,10 @@ paths:
             $ref: '#/definitions/dto.ErrorResponse'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
           schema:
             $ref: '#/definitions/dto.ErrorResponse'
       summary: Get Event Detail
@@ -442,7 +786,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.EventListSuccessResponse'
+            $ref: '#/definitions/dto.MyEventListResponse'
         "401":
           description: Unauthorized
           schema:
@@ -496,17 +840,28 @@ paths:
       summary: Get Profile
       tags:
       - user
-    put:
+    patch:
       consumes:
-      - application/json
+      - multipart/form-data
       description: Update profile of currently logged in user
       parameters:
-      - description: Profile data
-        in: body
-        name: request
+      - description: Name
+        in: formData
+        name: name
         required: true
-        schema:
-          $ref: '#/definitions/dto.UpdateProfileRequest'
+        type: string
+      - description: Location
+        in: formData
+        name: location
+        type: string
+      - description: Bio
+        in: formData
+        name: bio
+        type: string
+      - description: Avatar
+        in: formData
+        name: avatar
+        type: file
       produces:
       - application/json
       responses:
@@ -520,6 +875,10 @@ paths:
             $ref: '#/definitions/dto.ErrorResponse'
         "401":
           description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
           schema:
             $ref: '#/definitions/dto.ErrorResponse'
         "500":

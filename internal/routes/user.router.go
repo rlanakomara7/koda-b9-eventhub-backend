@@ -20,6 +20,6 @@ func UserRoutes(
 	{
 		profile.GET("", userHandler.Profile)
 
-		profile.PUT("", userHandler.UpdateProfile)
+		profile.PATCH("", userHandler.UpdateProfile)
 	}
 }

@@ -1,18 +1,30 @@
-include ./.env
+include ./.env.migration
 
-DB_URL=postgres://$(DB_USER):$(DB_PASS):$
+DB_URL=postgres://$(DBUSER):$(DBPASS)@$(DBHOST):$(DBPORT)/$(DBNAME)?sslmode=disable
+
+MIGRATION_PATH=db/migrations
+SEEDER_PATH=db/seeds
+
 
 migrate-create:
-	@migrate create -ext sql -dir $(MIGRATION_PATH)
+	@migrate create -ext sql -dir $(MIGRATION_PATH) -seq create_$(NAME)_table
+
+
+migrate-up:
+	@migrate -database $(DB_URL) -path $(MIGRATION_PATH) up
+
 
 migrate-down:
-	@migrate -database $(DB_URL )
+	@migrate -database $(DB_URL) -path $(MIGRATION_PATH) down
+
+migrate-version:
+	@migrate -database $(DB_URL) -path $(MIGRATION_PATH) version
 
 print-db-url:
-@echo
+	@echo $(DB_URL)
 
-seed-persons:
-@psql $(DB_URL) < $(SEEDER_PATH)
-
-seed-list :
-@for r %i in ($(SEEDER_PATH)) do echo %i
+seed:
+	@psql $(DB_URL) < $(SEEDER_PATH)/001_roles.sql
+	@psql $(DB_URL) < $(SEEDER_PATH)/002_event_categories.sql
+	@psql $(DB_URL) < $(SEEDER_PATH)/003_community_categories.sql
+	@psql $(DB_URL) < $(SEEDER_PATH)/004_communities_events.sql

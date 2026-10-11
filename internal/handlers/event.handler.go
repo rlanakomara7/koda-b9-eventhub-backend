@@ -1,10 +1,12 @@
 package handlers
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/dto"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/services"
 )
@@ -47,20 +49,21 @@ func NewEventMemberHandler(
 // @Failure      404 {object} dto.EventListNotFoundResponse
 // @Failure      500 {object} dto.ErrorResponse
 // @Router       /api/events [get]
-func (h *EventHandler) GetEvents(
-	c *gin.Context,
-) {
+func (h *EventHandler) GetEvents(c *gin.Context) {
 
 	search := c.Query("search")
 	format := c.Query("format")
 
-	events, err := h.Service.GetEvents(search, format)
+	events, err := h.Service.GetEvents(
+		search,
+		format,
+	)
 
 	if err != nil {
 		c.JSON(
 			http.StatusInternalServerError,
-			gin.H{
-				"message": err.Error(),
+			dto.ErrorResponse{
+				Message: err.Error(),
 			},
 		)
 		return
@@ -69,9 +72,9 @@ func (h *EventHandler) GetEvents(
 	if search != "" && len(events) == 0 {
 		c.JSON(
 			http.StatusNotFound,
-			dto.EventListNotFoundResponse{
+			dto.EventCardNotFoundResponse{
+				Data:    []dto.EventCardResponse{},
 				Message: "event not found",
-				Data:    events,
 			},
 		)
 		return
@@ -79,11 +82,10 @@ func (h *EventHandler) GetEvents(
 
 	c.JSON(
 		http.StatusOK,
-		dto.EventListSuccessResponse{
+		dto.EventCardListResponse{
 			Data: events,
 		},
 	)
-
 }
 
 // Get Event Detail
@@ -96,31 +98,53 @@ func (h *EventHandler) GetEvents(
 // @Success      200 {object} dto.EventDetailSuccessResponse
 // @Failure      400 {object} dto.ErrorResponse
 // @Failure      404 {object} dto.ErrorResponse
+// @Failure      500 {object} dto.ErrorResponse
 // @Router       /api/events/{id} [get]
 func (h *EventHandler) GetEventDetail(c *gin.Context) {
 
 	id, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
-		c.JSON(400, gin.H{
-			"message": "invalid id",
-		})
+		c.JSON(
+			http.StatusBadRequest,
+			dto.ErrorResponse{
+				Message: "invalid event id",
+			},
+		)
 		return
 	}
 
-	event, err := h.Service.GetEventDetail(uint(id))
+	event, err := h.Service.GetEventDetail(
+		uint(id),
+	)
 
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "event not found",
-		})
+
+		if errors.Is(err, pgx.ErrNoRows) {
+			c.JSON(
+				http.StatusNotFound,
+				dto.ErrorResponse{
+					Message: "event not found",
+				},
+			)
+			return
+		}
+
+		c.JSON(
+			http.StatusInternalServerError,
+			dto.ErrorResponse{
+				Message: err.Error(),
+			},
+		)
 		return
 	}
 
-	c.JSON(http.StatusOK,
+	c.JSON(
+		http.StatusOK,
 		dto.EventDetailSuccessResponse{
 			Data: event,
-		})
+		},
+	)
 }
 
 // Join Event
@@ -269,7 +293,7 @@ func (h *EventHandler) GetUpcomingEvents(c *gin.Context) {
 // @Tags         events
 // @Produce      json
 // @Security     BearerToken
-// @Success      200 {object} dto.EventListSuccessResponse
+// @Success      200 {object} dto.MyEventListResponse
 // @Failure      401 {object} dto.ErrorResponse
 // @Failure      500 {object} dto.ErrorResponse
 // @Router       /api/events/my [get]
@@ -296,7 +320,7 @@ func (h *EventHandler) GetMyEvents(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK,
-		dto.EventListSuccessResponse{
+		dto.MyEventListResponse{
 			Data: events,
 		})
 }

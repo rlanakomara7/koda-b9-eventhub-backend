@@ -15,7 +15,7 @@ import (
 // @title						KODA EventHub API
 // @version						1.0
 // @description					Backend for EventHub Application
-// @host						localhost:9000
+// @host						localhost:8500
 // @BasePath					/
 // @securityDefinitions.apikey	BearerToken
 // @in							header
@@ -25,8 +25,7 @@ func main() {
 
 	//load env
 	if err := godotenv.Load(); err != nil {
-		log.Println(err.Error())
-		return
+		log.Println(".env file not found, using environment variables")
 	}
 
 	db, err := config.InitDB()
@@ -34,6 +33,7 @@ func main() {
 		log.Println("FAILED TO CONNECT DB")
 		return
 	}
+
 	defer db.Close()
 
 	err = config.PingDB(db)

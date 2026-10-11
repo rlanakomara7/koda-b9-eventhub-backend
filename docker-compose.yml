@@ -1,0 +1,91 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: eventhub_backend
+
+    expose:
+      - "9000"
+
+    env_file:
+      - .env
+
+    environment:
+      HOST: 0.0.0.0
+      DBHOST: db
+      RDB_HOST: cache
+      RDB_USER: default
+
+    volumes:
+      - ./uploads:/srv/uploads
+
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+
+    container_name: eventhub_db
+
+    environment:
+      POSTGRES_USER: ${DBUSER}
+      POSTGRES_PASSWORD: ${DBPASS}
+      POSTGRES_DB: ${DBNAME}
+
+    volumes:
+      - eventhub_db:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DBUSER} -d ${DBNAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+    restart: unless-stopped
+
+  cache:
+    image: redis:7-alpine
+
+    container_name: eventhub_cache
+
+    environment:
+      RDB_PASS: ${RDB_PASS}
+
+    command:
+      - redis-server
+      - --requirepass
+      - ${RDB_PASS}
+
+    healthcheck:
+      test: ["CMD-SHELL", 'redis-cli -a "$${RDB_PASS}" ping | grep PONG']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+
+    container_name: eventhub_nginx
+
+    ports:
+      - "8500:80"
+
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped
+
+volumes:
+  eventhub_db:

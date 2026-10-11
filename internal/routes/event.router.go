@@ -27,10 +27,13 @@ func EventRoutes(
 	protected.Use(middleware.AuthMiddleware(tokenRepo))
 
 	{
+		protected.GET("/my", handler.GetMyEvents)
+
+		protected.POST("", handler.CreateEvent)
+
 		protected.POST("/:id/join", memberHandler.JoinEvent)
 
 		protected.DELETE("/:id/leave", memberHandler.LeaveEvent)
 
-		protected.GET("/my", handler.GetMyEvents)
 	}
 }

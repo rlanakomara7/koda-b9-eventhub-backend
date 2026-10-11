@@ -1,12 +1,16 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/dto"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/repositories"
+	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/utils"
 )
 
 type UserHandler struct {
@@ -58,64 +62,158 @@ func (h *UserHandler) Profile(c *gin.Context) {
 	})
 }
 
-// ✅ TAMBAH
 // Update Profile
 //
 // @Summary      Update Profile
 // @Description  Update profile of currently logged in user
 // @Tags         user
-// @Accept       json
+// @Accept       mpfd
 // @Produce      json
 // @Security     BearerToken
-// @Param        request body dto.UpdateProfileRequest true "Profile data"
+// @Param        name formData string true "Name"
+// @Param        location formData string false "Location"
+// @Param        bio formData string false "Bio"
+// @Param        avatar formData file false "Avatar"
 // @Success      200 {object} dto.ProfileSuccessResponse
 // @Failure      400 {object} dto.ErrorResponse
 // @Failure      401 {object} dto.ErrorResponse
+// @Failure      422 {object} dto.ErrorResponse
 // @Failure      500 {object} dto.ErrorResponse
-// @Router       /api/profile [put]
+// @Router       /api/profile [patch]
 func (h *UserHandler) UpdateProfile(c *gin.Context) {
-
-	var request dto.UpdateProfileRequest
-
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
-		return
-	}
 
 	userID := c.GetUint("user_id")
 
 	if userID == 0 {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "unauthorized",
-		})
+		c.JSON(
+			http.StatusUnauthorized,
+			dto.ErrorResponse{
+				Message: "unauthorized",
+			},
+		)
 		return
 	}
 
-	err := h.userRepository.UpdateProfile(
-		userID,
-		request,
+	var req dto.UpdateProfileRequest
+
+	// multipart/form-data + Gin Validator
+	err := c.ShouldBindWith(
+		&req,
+		binding.FormMultipart,
 	)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "failed to update profile",
-		})
+		c.JSON(
+			http.StatusBadRequest,
+			dto.ErrorResponse{
+				Message: err.Error(),
+			},
+		)
 		return
 	}
 
-	profile, err := h.userRepository.GetProfile(userID)
+	//cekstring
+	req.Name = strings.TrimSpace(req.Name)
+	req.Location = strings.TrimSpace(req.Location)
+	req.Bio = strings.TrimSpace(req.Bio)
+
+	// upload avatar
+	avatarURL, err := utils.SaveUploadedFile(
+		c,
+		"avatar",
+	)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "failed to get profile",
-		})
+		c.JSON(
+			http.StatusUnprocessableEntity,
+			dto.ErrorResponse{
+				Message: err.Error(),
+			},
+		)
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": "update profile success",
-		"data":    profile,
-	})
+	// kalau user tidak upload avatar baru
+	if avatarURL == "" {
+
+		currentProfile, err := h.userRepository.GetProfile(
+			userID,
+		)
+
+		if err != nil {
+
+			fmt.Println(
+				"GET PROFILE ERROR:",
+				err,
+			)
+
+			c.JSON(
+				http.StatusInternalServerError,
+				dto.ErrorResponse{
+					Message: "failed to get profile",
+				},
+			)
+			return
+		}
+
+		// pakai avatar lama
+		req.AvatarURL = currentProfile.AvatarURL
+
+	} else {
+
+		// pakai avatar baru
+		req.AvatarURL = avatarURL
+	}
+
+	//  update database
+	err = h.userRepository.UpdateProfile(
+		userID,
+		req,
+	)
+
+	if err != nil {
+
+		fmt.Println(
+			"UPDATE PROFILE ERROR:",
+			err,
+		)
+
+		// supaya kita tahu query mana yang salah
+		c.JSON(
+			http.StatusInternalServerError,
+			dto.ErrorResponse{
+				Message: err.Error(),
+			},
+		)
+		return
+	}
+
+	// ambil profile terbaru
+	profile, err := h.userRepository.GetProfile(
+		userID,
+	)
+
+	if err != nil {
+
+		fmt.Println(
+			"GET UPDATED PROFILE ERROR:",
+			err,
+		)
+
+		c.JSON(
+			http.StatusInternalServerError,
+			dto.ErrorResponse{
+				Message: "failed to get profile",
+			},
+		)
+		return
+	}
+
+	c.JSON(
+		http.StatusOK,
+		gin.H{
+			"message": "update profile success",
+			"data":    profile,
+		},
+	)
 }

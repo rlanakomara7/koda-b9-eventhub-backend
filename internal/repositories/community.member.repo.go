@@ -27,7 +27,7 @@ func (r *CommunityMemberRepository) IsMember(
 			SELECT COUNT(*)
 			FROM community_members
 			WHERE community_id=$1
-			AND user_id=$1
+			AND user_id=$2
 			`,
 		communityID,
 		userID,

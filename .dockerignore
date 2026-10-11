@@ -1,0 +1,8 @@
+.git
+.gitigonore
+.air.toml
+.env
+README.md
+makefile
+Dockerfile
+docker-compose.yaml

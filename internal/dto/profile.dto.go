@@ -22,8 +22,8 @@ type ProfileSuccessResponse struct {
 }
 
 type UpdateProfileRequest struct {
-	Name      string `json:"name" binding:"required"`
-	AvatarURL string `json:"avatar_url"`
-	Location  string `json:"location"`
-	Bio       string `json:"bio"`
+	Name      string `json:"name" form:"name" binding:"required,min=2,max=100"`
+	AvatarURL string `json:"avatar_url" form:"avatar_url"`
+	Location  string `json:"location" form:"location" binding:"omitempty,max=150"`
+	Bio       string `json:"bio" form:"bio" binding:"omitempty,max=500"`
 }

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/dto"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/models"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/repositories"
 )
@@ -22,31 +23,18 @@ func NewEventService(
 func (s *EventService) GetEvents(
 	search string,
 	format string,
-) ([]models.Event, error) {
+) ([]dto.EventCardResponse, error) {
 
-	events, err := s.EventRepo.GetEvents(
+	return s.EventRepo.GetEvents(
 		search,
 		format,
 	)
-
-	if err != nil {
-		return nil, err
-	}
-	return events, nil
 }
 
 // event detail
-func (s *EventService) GetEventDetail(
-	id uint,
-) (*models.Event, error) {
+func (s *EventService) GetEventDetail(id uint) (*dto.EventDetailResponse, error) {
 
-	event, err := s.EventRepo.GetEventByID(id)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return event, nil
+	return s.EventRepo.GetEventDetail(id)
 }
 
 // upcoming events
@@ -56,7 +44,7 @@ func (s *EventService) GetUpcomingEvents() ([]models.Event, error) {
 }
 
 // get myevents
-func (s *EventService) GetMyEvents(UserID uint) ([]models.Event, error) {
+func (s *EventService) GetMyEvents(UserID uint) ([]dto.MyEventResponse, error) {
 
 	return s.EventRepo.GetMyEvents(UserID)
 }

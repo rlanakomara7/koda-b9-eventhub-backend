@@ -88,6 +88,8 @@ func (r *UserRepository) GetUserByID(userID uint) (*models.User, error) {
 		&user.Location,
 		&user.Bio,
 		&user.Status,
+		&user.CreatedAt,
+		&user.UpdatedAt,
 	)
 	if err != nil {
 		return nil, err
@@ -211,23 +213,27 @@ func (r *UserRepository) GetProfile(userID uint) (*dto.ProfileResponse, error) {
 }
 
 // find user
+// find user
 func (r *UserRepository) FindByEmail(email string) (*models.User, error) {
-	query := `SELECT 
-		user_id,
-		role_id,
-		name,
-		email,
-		password,
-		avatar_url,
-		job,
-		location,
-		bio,
-		status,
-		created_at,
-		updated_at
-		
-		FROM users 
-		WHERE email=$1`
+	query := `
+	SELECT 
+		u.user_id,
+		u.role_id,
+		u.name,
+		u.email,
+		u.password,
+		u.avatar_url,
+		u.job,
+		u.location,
+		u.bio,
+		u.status,
+		u.created_at,
+		u.updated_at,
+		r.role_name
+	FROM users u
+	JOIN roles r ON u.role_id = r.role_id
+	WHERE u.email = $1
+	`
 
 	user := &models.User{}
 
@@ -248,6 +254,7 @@ func (r *UserRepository) FindByEmail(email string) (*models.User, error) {
 		&user.Status,
 		&user.CreatedAt,
 		&user.UpdatedAt,
+		&user.Role,
 	)
 
 	if err != nil {
@@ -276,26 +283,32 @@ func (r *UserRepository) UpdatePassword(userID uint, password string) error {
 	return err
 }
 
-func (r *UserRepository) UpdateProfile(userID uint, request dto.UpdateProfileRequest) error {
+// update profile
+func (r *UserRepository) UpdateProfile(
+	userID uint,
+	req dto.UpdateProfileRequest,
+) error {
 
 	query := `
 	UPDATE users
-	SET 
-		name=$1,
-		avatar_url=$2,
-		location=$3,
-		bio=$4,
-		update_at=now()
-	WHERE user_id=$5`
+	SET
+		name = $1,
+		avatar_url = $2,
+		location = $3,
+		bio = $4,
+		updated_at = NOW()
+	WHERE user_id = $5
+	`
 
 	_, err := r.DB.Exec(
 		context.Background(),
 		query,
-		request.Name,
-		request.AvatarURL,
-		request.Location,
-		request.Bio,
+		req.Name,
+		req.AvatarURL,
+		req.Location,
+		req.Bio,
 		userID,
 	)
+
 	return err
 }

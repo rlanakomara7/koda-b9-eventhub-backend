@@ -15,11 +15,12 @@ import (
 func InitMainRouter(db *pgxpool.Pool, redisClient *redis.Client) *gin.Engine {
 
 	router := gin.Default()
-
 	//cors
 	router.Use(middleware.Cors)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	router.Static("/uploads", "./uploads")
 
 	//repostiory
 	userRepository := repositories.NewUserRepository(db)
@@ -57,7 +58,6 @@ func InitMainRouter(db *pgxpool.Pool, redisClient *redis.Client) *gin.Engine {
 	// Route profile user.
 	UserRoutes(router, userHandler, tokenRepo)
 
-	//route
 	AuthRoutes(router, authHandler)
 
 	CommunityRoutes(router, communityHandler, communityMemberHandler, tokenRepo)

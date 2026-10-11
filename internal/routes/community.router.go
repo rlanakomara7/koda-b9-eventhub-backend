@@ -11,17 +11,13 @@ func CommunityRoutes(
 	router *gin.Engine,
 	handler *handlers.CommunityHandler,
 	memberHandler *handlers.CommunityMemberHandler,
-	tokenRepo *repositories.TokenRepository) {
-
+	tokenRepo *repositories.TokenRepository,
+) {
 	community := router.Group("/api/communities")
 
-	community.Use(middleware.AuthMiddleware(tokenRepo))
+	community.GET("", middleware.OptionalAuthMiddleware(tokenRepo), handler.GetCommunities)
 
-	{
-		community.GET("", handler.GetCommunities)
+	community.POST("/:id/join", middleware.AuthMiddleware(tokenRepo), memberHandler.JoinCommunity)
 
-		community.POST("/:id/join", memberHandler.JoinCommunity)
-
-		community.DELETE("/:id/leave", memberHandler.LeaveCommunity)
-	}
+	community.DELETE("/:id/leave", middleware.AuthMiddleware(tokenRepo), memberHandler.LeaveCommunity)
 }

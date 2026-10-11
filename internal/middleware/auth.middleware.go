@@ -14,6 +14,8 @@ import (
 func AuthMiddleware(tokenRepo *repositories.TokenRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
+		println("AUTH MIDDLEWARE RUNNING")
+
 		authHeader := c.GetHeader("Authorization")
 
 		if authHeader == "" {
@@ -94,5 +96,17 @@ func AuthMiddleware(tokenRepo *repositories.TokenRepository) gin.HandlerFunc {
 		c.Set("role_id", claims["role_id"])
 
 		c.Next()
+	}
+}
+
+func OptionalAuthMiddleware(tokenRepo *repositories.TokenRepository) gin.HandlerFunc {
+	authMiddleware := AuthMiddleware(tokenRepo)
+
+	return func(c *gin.Context) {
+		if strings.TrimSpace(c.GetHeader("Authorization")) == "" {
+			c.Next()
+			return
+		}
+		authMiddleware(c)
 	}
 }
