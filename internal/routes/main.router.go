@@ -46,7 +46,7 @@ func InitMainRouter(db *pgxpool.Pool, redisClient *redis.Client) *gin.Engine {
 	communtiyService := services.NewCommunityService(communityRepo)
 	communityMemberService := services.NewCommunityMemberService(communityMemberRepo)
 	communityHandler := handlers.NewCommunityHandler(communtiyService)
-	communityMemberHandler := handlers.NewCommunityMemberHandler(communityMemberService)
+	communityMemberHandler := handlers.NewCommunityMemberHandler(communityMemberService, communityMemberRepo)
 
 	//event member
 	eventMemberRepo := repositories.NewEventMemberRepository(db)

@@ -14,9 +14,11 @@ FROM alpine:latest
 
 WORKDIR /srv
 
+RUN apk add --no-cache ca-certificates
+
 COPY --from=builder /app/eventhub /srv/eventhub
 
-RUN mkdir -p /srv/uplouds
+RUN mkdir -p /srv/uploads
 
 EXPOSE 9000
 

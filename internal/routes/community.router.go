@@ -15,7 +15,11 @@ func CommunityRoutes(
 ) {
 	community := router.Group("/api/communities")
 
+	community.GET("/public", handler.GetPublicCommunities)
+
 	community.GET("", middleware.OptionalAuthMiddleware(tokenRepo), handler.GetCommunities)
+
+	community.GET("/:id/members", memberHandler.GetMembers)
 
 	community.POST("/:id/join", middleware.AuthMiddleware(tokenRepo), memberHandler.JoinCommunity)
 

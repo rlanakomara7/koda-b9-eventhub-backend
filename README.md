@@ -79,67 +79,119 @@ The application provides authentication, event management, community management,
 
 ## Usage Instruction
 
-### DB setup
+### DB Setup
 
-Create your environment on the root directory named `.env`
+1. Create an environment file named `.env` in the root directory.
+2. Configure your database credentials:
 
-```
+```env
 DB_HOST={YOUR_DB_HOST}
-DB_PORT={YOUR_DB_PORT}
-DB_PASS={YOUR_DB_PASS}
-DB_NAME={YOUR_DB_NAME}
+DB_PORT=5432
 DB_USER={YOUR_DB_USER}
+DB_PASS={YOUR_DB_PASSWORD}
+DB_NAME={YOUR_DB_NAME}
 ```
+
+Add other environment variables required by the application. Do not commit real credentials to GitHub.
 
 ### Running the Application
 
-1. Clone this repostory
+1. Clone this repository:
 
 ```bash
-$ git clone url
+git clone https://github.com/rlanakomara7/koda-b9-eventhub-backend.git
+cd koda-b9-eventhub-backend
 ```
 
-2. Install depedency
+2. Configure your `.env` file.
 
-```
-$ go mod download
+3. Build and run using Docker Compose:
+
+```bash
+docker compose up -d --build
 ```
 
-3. etc.
+4. Check running containers:
+
+```bash
+docker compose ps
+```
+
+5. Access Swagger Documentation:
+
+`http://localhost:8500/swagger/index.html`
+
+To stop the application:
+
+```bash
+docker compose down
+```
+
+### Running with Frontend
+
+For the integrated production environment, ensure the frontend repository is available at the path configured in Docker Compose.
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.production.yml up -d --build
+```
 
 ## Routes
 
-### Features
+### Authentication
 
-| Endpoint       | Method | Description    |
-| -------------- | ------ | -------------- |
-| /auth/register | POST   | Register       |
-| /auth/login    | POST   | Login          |
-| /auth/logout   | POST   | Logout         |
-| /events        | GET    | Event List     |
-| /communities   | GET    | Community List |
+| Endpoint             | Method | Description   |
+| -------------------- | ------ | ------------- |
+| `/api/auth/register` | POST   | Register User |
+| `/api/auth/login`    | POST   | Login         |
+| `/api/auth/logout`   | POST   | Logout        |
+
+### Events
+
+| Endpoint                | Method | Description  |
+| ----------------------- | ------ | ------------ |
+| `/api/events`           | GET    | Event List   |
+| `/api/events/:id`       | GET    | Event Detail |
+| `/api/events`           | POST   | Create Event |
+| `/api/events/my`        | GET    | My Events    |
+| `/api/events/:id`       | PATCH  | Update Event |
+| `/api/events/:id`       | DELETE | Delete Event |
+| `/api/events/:id/join`  | POST   | Join Event   |
+| `/api/events/:id/leave` | DELETE | Leave Event  |
+
+### Communities
+
+| Endpoint                       | Method | Description        |
+| ------------------------------ | ------ | ------------------ |
+| `/api/communities`             | GET    | Community List     |
+| `/api/communities/public`      | GET    | Public Communities |
+| `/api/communities/:id/members` | GET    | Community Members  |
+| `/api/communities/:id/join`    | POST   | Join Community     |
+| `/api/communities/:id/leave`   | DELETE | Leave Community    |
+
+Some endpoints require JWT authentication.
 
 ### Documentation
 
-For complete documentation, visit `/swagger/index.html`
+For complete API documentation, visit `/swagger/index.html`.
 
 ## Changelog
 
-| Version | Desctiption        |
-| ------- | ------------------ |
-| 1.0.0   | Initial app        |
-| 1.1.0   | add authentication |
+| Version    | Description                                                                             |
+| ---------- | --------------------------------------------------------------------------------------- |
+| Unreleased | Authentication, User Profile, Event Management, Community Management, Community Members |
+| Planned    | Event Discussion and Community Discussion                                               |
 
-## How To Contribute
+## How to Contribute
 
-- Fork this repository
-- Create your changes
-- Pull request
+1. Fork this repository.
+2. Create a new branch.
+3. Commit and push your changes.
+4. Open a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License
+This project is licensed under the **MIT License**. Ensure the repository contains a `LICENSE` file.
 
 ## Related Project
 
-[Frontend] (https://github.com/rlanakomara7/EventHub.git)
+[EventHub Frontend](https://github.com/rlanakomara7/EventHub)

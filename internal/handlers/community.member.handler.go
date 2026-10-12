@@ -6,19 +6,22 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/dto"
+	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/repositories"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/services"
 )
 
 type CommunityMemberHandler struct {
-	Service *services.CommunityMemberService
+	Service    *services.CommunityMemberService
+	Repository *repositories.CommunityMemberRepository
 }
 
 func NewCommunityMemberHandler(
 	service *services.CommunityMemberService,
+	repository *repositories.CommunityMemberRepository,
 ) *CommunityMemberHandler {
-
 	return &CommunityMemberHandler{
-		Service: service,
+		Service:    service,
+		Repository: repository,
 	}
 }
 
@@ -35,37 +38,39 @@ func NewCommunityMemberHandler(
 // @Failure      401 {object} dto.ErrorResponse
 // @Router       /api/communities/{id}/join [post]
 func (h *CommunityMemberHandler) JoinCommunity(c *gin.Context) {
-
 	id, err := strconv.Atoi(c.Param("id"))
 
-	if err != nil {
-		c.JSON(http.StatusBadRequest,
+	if err != nil || id <= 0 {
+		c.JSON(
+			http.StatusBadRequest,
 			dto.ErrorResponse{
 				Message: "invalid community id",
-			})
+			},
+		)
 		return
 	}
 
 	userID := c.GetUint("user_id")
 
 	if userID == 0 {
-		c.JSON(http.StatusUnauthorized,
+		c.JSON(
+			http.StatusUnauthorized,
 			dto.ErrorResponse{
-				Message: "unautorizhed",
-			})
+				Message: "unauthorized",
+			},
+		)
 		return
 	}
 
-	err = h.Service.JoinCommunity(
-		uint(id),
-		userID,
-	)
+	err = h.Service.JoinCommunity(uint(id), userID)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest,
+		c.JSON(
+			http.StatusBadRequest,
 			dto.ErrorResponse{
 				Message: err.Error(),
-			})
+			},
+		)
 		return
 	}
 
@@ -90,11 +95,11 @@ func (h *CommunityMemberHandler) JoinCommunity(c *gin.Context) {
 // @Failure      401 {object} dto.ErrorResponse
 // @Router       /api/communities/{id}/leave [delete]
 func (h *CommunityMemberHandler) LeaveCommunity(c *gin.Context) {
-
 	id, err := strconv.Atoi(c.Param("id"))
 
-	if err != nil {
-		c.JSON(http.StatusBadRequest,
+	if err != nil || id <= 0 {
+		c.JSON(
+			http.StatusBadRequest,
 			dto.ErrorResponse{
 				Message: "invalid community id",
 			},
@@ -105,29 +110,77 @@ func (h *CommunityMemberHandler) LeaveCommunity(c *gin.Context) {
 	userID := c.GetUint("user_id")
 
 	if userID == 0 {
-		c.JSON(http.StatusUnauthorized,
+		c.JSON(
+			http.StatusUnauthorized,
 			dto.ErrorResponse{
 				Message: "unauthorized",
-			})
+			},
+		)
 		return
 	}
 
-	err = h.Service.LeaveCommunity(
+	err = h.Service.LeaveCommunity(uint(id), userID)
+
+	if err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			dto.ErrorResponse{
+				Message: err.Error(),
+			},
+		)
+		return
+	}
+
+	c.JSON(
+		http.StatusOK,
+		dto.Response{
+			Message: "leave community success",
+		},
+	)
+}
+
+// @Summary      Get Community Members
+// @Description  Get actual community member profiles
+// @Tags         communities
+// @Produce      json
+// @Param        id path int true "Community ID"
+// @Success      200 {object} dto.Response
+// @Failure      400 {object} dto.ErrorResponse
+// @Failure      500 {object} dto.ErrorResponse
+// @Router       /api/communities/{id}/members [get]
+func (h *CommunityMemberHandler) GetMembers(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil || id <= 0 {
+		c.JSON(
+			http.StatusBadRequest,
+			dto.ErrorResponse{
+				Message: "invalid community id",
+			},
+		)
+		return
+	}
+
+	members, err := h.Repository.GetMembers(
+		c.Request.Context(),
 		uint(id),
-		userID,
 	)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest,
+		c.JSON(
+			http.StatusInternalServerError,
 			dto.ErrorResponse{
-				Message: err.Error(),
-			})
+				Message: "failed to load community members",
+			},
+		)
 		return
 	}
 
-	c.JSON(http.StatusOK,
-		dto.Response{
-			Message: "leave community success",
-		})
-
+	c.JSON(
+		http.StatusOK,
+		gin.H{
+			"message": "get community members success",
+			"data":    members,
+		},
+	)
 }
