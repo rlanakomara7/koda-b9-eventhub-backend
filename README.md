@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-MIT-green)](https://opensource.org/license/mit)
 [![Go](https://img.shields.io/badge/Go-1.27.1-blue?logo=Go)](https://go.dev/)
-![Gin-Gonic](https://img.shields.io/badge/Gin%20Gonic-1.12.0-blue?logo=Gin&logoColor=fff300)
+![Gin-Gonic](https://img.shields.io/badge/Gin%20Gonic-1.12.0-blue?logo=Gin&logoColor=fff300).
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16.15-blue?logo=postgresql)](https://www.postgresql.org/)
 [![Redis](https://img.shields.io/badge/Redis-9.22.0-blue?logo=Redis)](https://hub.docker.com/_/redishttps://hub.docker.com/_/redis)
 [![Swagger](https://img.shields.io/badge/Swagger-1.6.1-blue?logo=swagger)](https://swagger.io)
@@ -55,8 +55,6 @@ The application provides authentication, event management, community management,
 - GitHub
 - Makefile
 - Environment Variables (.env)
-
-<br>
 
 ## Features
 

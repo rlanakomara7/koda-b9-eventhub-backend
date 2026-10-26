@@ -1,8 +1,14 @@
 .git
 .gitigonore
+
+tmp
 .air.toml
-.env
+.env*
+.env.migration
+
 README.md
 makefile
+db
+
 Dockerfile
 docker-compose.yaml

@@ -223,7 +223,7 @@ func (r *UserRepository) FindByEmail(email string) (*models.User, error) {
 		u.email,
 		u.password,
 		u.avatar_url,
-		u.job,
+		u.job,	
 		u.location,
 		u.bio,
 		u.status,

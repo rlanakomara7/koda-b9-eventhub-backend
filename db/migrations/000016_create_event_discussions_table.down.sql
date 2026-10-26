@@ -1,1 +1,1 @@
-DROP TABLE event_discussions;
+DROP TABLE event_discussions;Get-ChildItem .\db\migrations\*.sql | Where-Object Length -eq 0
