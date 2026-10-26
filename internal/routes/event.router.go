@@ -24,9 +24,11 @@ func EventRoutes(
 			handler.GetEventsPage(c)
 			return
 		}
+
 		handler.GetEvents(c)
 	})
 
+	event.GET("/categories", handler.GetEventCategories)
 	event.GET("/upcoming", handler.GetUpcomingEvents)
 	event.GET("/:id", handler.GetEventDetail)
 
@@ -34,9 +36,11 @@ func EventRoutes(
 	protected.Use(middleware.AuthMiddleware(tokenRepo))
 
 	protected.GET("/my", handler.GetMyEvents)
+
 	protected.POST("", handler.CreateEvent)
 	protected.PATCH("/:id", handler.UpdateEvent)
 	protected.DELETE("/:id", handler.DeleteEvent)
+
 	protected.POST("/:id/join", memberHandler.JoinEvent)
 	protected.DELETE("/:id/leave", memberHandler.LeaveEvent)
 }
