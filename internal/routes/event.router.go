@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/handlers"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/middleware"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/repositories"
@@ -36,6 +37,7 @@ func EventRoutes(
 	protected.Use(middleware.AuthMiddleware(tokenRepo))
 
 	protected.GET("/my", handler.GetMyEvents)
+	protected.GET("/joined", memberHandler.GetJoinedEvents)
 
 	protected.POST("", handler.CreateEvent)
 	protected.PATCH("/:id", handler.UpdateEvent)
