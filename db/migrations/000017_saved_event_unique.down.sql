@@ -1,0 +1,2 @@
+ALTER TABLE saved_events
+DROP CONSTRAINT saved_event_unique;

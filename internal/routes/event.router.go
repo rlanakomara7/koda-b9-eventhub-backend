@@ -45,4 +45,7 @@ func EventRoutes(
 
 	protected.POST("/:id/join", memberHandler.JoinEvent)
 	protected.DELETE("/:id/leave", memberHandler.LeaveEvent)
+	protected.GET("/saved", memberHandler.GetSavedEvents)
+	protected.POST("/:id/save", memberHandler.SaveEvent)
+	protected.DELETE("/:id/save", memberHandler.UnsaveEvent)
 }
