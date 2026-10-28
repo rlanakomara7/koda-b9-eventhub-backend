@@ -100,6 +100,7 @@ type EventSpeakerResponse struct {
 type EventDiscussionResponse struct {
 	DiscussionID uint   `json:"discussion_id"`
 	UserID       uint   `json:"user_id"`
+	EventID      int    `json:"event_id"`
 	Name         string `json:"name"`
 	AvatarURL    string `json:"avatar_url"`
 	Message      string `json:"message"`
