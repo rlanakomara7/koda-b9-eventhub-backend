@@ -136,6 +136,36 @@ func (r *EventRepository) CreateEvent(userID uint, req dto.CreateEventRequest) (
 		}
 
 	}
+
+	//notifications
+	if req.CommunityID != nil {
+		_, err = tx.Exec(ctx, `
+        INSERT INTO notifications (
+            user_id, type, title, message, path
+        )
+        SELECT DISTINCT
+            cm.user_id,
+            'event',
+            'New event in ' || c.name,
+            'New event: ' || $2,
+            '/event/' || $3::text
+        FROM community_members cm
+        JOIN communities c
+          ON c.community_id = cm.community_id
+        WHERE cm.community_id = $1
+          AND cm.user_id <> $4
+    `,
+			*req.CommunityID,
+			req.Title,
+			eventID,
+			userID,
+		)
+
+		if err != nil {
+			return 0, err
+		}
+	}
+
 	if err := tx.Commit(ctx); err != nil {
 		return 0, err
 	}

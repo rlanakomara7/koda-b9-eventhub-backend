@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/dto"
@@ -25,34 +24,65 @@ func (r *CommunityRepository) GetCommunities(
 ) ([]dto.CommunityResponse, error) {
 
 	query := `
-SELECT DISTINCT
-    c.community_id,
-    c.name,
-    COALESCE(c.description, ''),
-    COALESCE(c.banner_url, ''),
-    cm.user_id IS NOT NULL AS is_joined
-FROM communities c
-LEFT JOIN community_members cm
-    ON cm.community_id = c.community_id
-    AND cm.user_id = $3
-LEFT JOIN community_category_mappings ccm
-    ON ccm.community_id = c.community_id
-LEFT JOIN community_categories cc
-    ON cc.category_id = ccm.category_id
-WHERE c.status = 'active'
-AND (
-    $1 = ''
-    OR c.name ILIKE '%' || $1 || '%'
-)
-AND (
-    $2 = ''
-    OR cc.category_name ILIKE '%' || $2 || '%'
-)
-ORDER BY c.name ASC
-`
+        SELECT
+            c.community_id,
+            c.name,
+            COALESCE(c.description, ''),
+            COALESCE(c.banner_url, ''),
 
-	fmt.Println("QUERY COMMUNITY:")
-	fmt.Println(query)
+            ARRAY(
+                SELECT cc.category_name
+                FROM community_category_mappings ccm
+                JOIN community_categories cc
+                    ON cc.category_id = ccm.category_id
+                WHERE ccm.community_id = c.community_id
+                ORDER BY cc.category_name
+            ) AS categories,
+
+            (
+                SELECT COUNT(*)::int
+                FROM community_members cm
+                WHERE cm.community_id = c.community_id
+            ) AS member_count,
+
+            (
+                SELECT COUNT(*)::int
+                FROM events e
+                WHERE e.community_id = c.community_id
+                  AND e.event_date >= CURRENT_DATE
+                  AND e.status = 'active'
+            ) AS upcoming_count,
+
+            EXISTS (
+                SELECT 1
+                FROM community_members cm
+                WHERE cm.community_id = c.community_id
+                  AND cm.user_id = $3
+            ) AS is_joined
+
+        FROM communities c
+
+        WHERE c.status = 'active'
+
+          AND (
+              $1 = ''
+              OR c.name ILIKE '%' || $1 || '%'
+          )
+
+          AND (
+              $2 = ''
+              OR EXISTS (
+                  SELECT 1
+                  FROM community_category_mappings ccm
+                  JOIN community_categories cc
+                      ON cc.category_id = ccm.category_id
+                  WHERE ccm.community_id = c.community_id
+                    AND LOWER(cc.category_name) = LOWER($2)
+              )
+          )
+
+        ORDER BY c.name ASC
+    `
 
 	rows, err := r.DB.Query(
 		context.Background(),
@@ -65,13 +95,11 @@ ORDER BY c.name ASC
 	if err != nil {
 		return nil, err
 	}
-
 	defer rows.Close()
 
 	communities := []dto.CommunityResponse{}
 
 	for rows.Next() {
-
 		var community dto.CommunityResponse
 
 		err := rows.Scan(
@@ -79,6 +107,9 @@ ORDER BY c.name ASC
 			&community.Name,
 			&community.Description,
 			&community.BannerURL,
+			&community.Categories,
+			&community.MemberCount,
+			&community.UpcomingCount,
 			&community.IsJoined,
 		)
 
@@ -86,15 +117,8 @@ ORDER BY c.name ASC
 			return nil, err
 		}
 
-		communities = append(
-			communities,
-			community,
-		)
+		communities = append(communities, community)
 	}
 
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-
-	return communities, nil
+	return communities, rows.Err()
 }

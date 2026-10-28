@@ -20,7 +20,6 @@ func NewEventMemberRepository(
 }
 
 // JOIN EVENT
-
 func (r *EventMemberRepository) JoinEvent(
 	eventID uint,
 	userID uint,
@@ -29,14 +28,23 @@ func (r *EventMemberRepository) JoinEvent(
 	_, err := r.DB.Exec(
 		context.Background(),
 		`
-		INSERT INTO event_members
-		(
-			event_id,
-			user_id
-		)
-		VALUES
-		($1,$2)
-		`,
+        WITH joined AS (
+            INSERT INTO event_members (event_id, user_id)
+            VALUES ($1, $2)
+            RETURNING event_id, user_id
+        )
+        INSERT INTO notifications (
+            user_id, type, title, message, path
+        )
+        SELECT
+            j.user_id,
+            'register',
+            'Registration confirmed',
+            'You registered for ' || e.title || '.',
+            '/event/' || e.event_id::text
+        FROM joined j
+        JOIN events e ON e.event_id = j.event_id
+        `,
 		eventID,
 		userID,
 	)

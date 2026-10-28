@@ -183,6 +183,27 @@ func (r *EventRepository) UpdateEvent(
 		}
 	}
 
+	//notifications
+	_, err = tx.Exec(ctx, `
+    INSERT INTO notifications (
+        user_id, type, title, message, path
+    )
+    SELECT DISTINCT
+        em.user_id,
+        'update',
+        'Event updated',
+        'An event you joined has been updated: ' || e.title,
+        '/event/' || e.event_id::text
+    FROM event_members em
+    JOIN events e ON e.event_id = em.event_id
+    WHERE em.event_id = $1
+      AND em.user_id <> $2
+`, eventID, userID)
+
+	if err != nil {
+		return err
+	}
+
 	if err := tx.Commit(ctx); err != nil {
 		return err
 	}

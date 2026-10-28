@@ -2,8 +2,8 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/redis/go-redis/v9"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/redis/go-redis/v9"
 
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/handlers"
 	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/middleware"
@@ -51,12 +51,15 @@ func InitMainRouter(db *pgxpool.Pool, redisClient *redis.Client) *gin.Engine {
 	communityHandler := handlers.NewCommunityHandler(communityService)
 	communityMemberHandler := handlers.NewCommunityMemberHandler(communityMemberService, communityMemberRepo)
 
-	EventRoutes(router, eventHandler, eventMemberHandler, tokenRepo)
+	notificationRepo := repositories.NewNotificationRepository(db)
+	notificationService := services.NewNotificationService(notificationRepo)
+	notificationHandler := handlers.NewNotificationHandler(notificationService)
 
+	EventRoutes(router, eventHandler, eventMemberHandler, tokenRepo)
 	UserRoutes(router, userHandler, tokenRepo)
 	AuthRoutes(router, authHandler)
-
 	CommunityRoutes(router, communityHandler, communityMemberHandler, tokenRepo)
+	NotificationRoutes(router, notificationHandler, tokenRepo)
 
 	return router
 }

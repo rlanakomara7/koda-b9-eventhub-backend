@@ -54,13 +54,30 @@ func (r *CommunityMemberRepository) JoinCommunity(
 	communityID uint,
 	userID uint,
 ) error {
+
 	_, err := r.DB.Exec(
 		context.Background(),
 		`
-		INSERT INTO community_members
-			(community_id, user_id)
-		VALUES ($1, $2)
-		`,
+        WITH joined AS (
+            INSERT INTO community_members (
+                community_id, user_id
+            )
+            VALUES ($1, $2)
+            RETURNING community_id, user_id
+        )
+        INSERT INTO notifications (
+            user_id, type, title, message, path
+        )
+        SELECT
+            j.user_id,
+            'community',
+            'Joined community',
+            'You joined ' || c.name || '.',
+            '/communities/' || c.community_id::text
+        FROM joined j
+        JOIN communities c
+          ON c.community_id = j.community_id
+        `,
 		communityID,
 		userID,
 	)
@@ -68,7 +85,6 @@ func (r *CommunityMemberRepository) JoinCommunity(
 	return err
 }
 
-// ✅ TETAP: Leave Community
 func (r *CommunityMemberRepository) LeaveCommunity(
 	communityID uint,
 	userID uint,
@@ -87,7 +103,6 @@ func (r *CommunityMemberRepository) LeaveCommunity(
 	return err
 }
 
-// ✅ TAMBAH: Ambil profil anggota dari PostgreSQL
 func (r *CommunityMemberRepository) GetMembers(
 	ctx context.Context,
 	communityID uint,
