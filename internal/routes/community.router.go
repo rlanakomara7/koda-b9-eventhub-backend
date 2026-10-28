@@ -21,7 +21,13 @@ func CommunityRoutes(
 
 	community.GET("/:id/members", memberHandler.GetMembers)
 
-	community.POST("/:id/join", middleware.AuthMiddleware(tokenRepo), memberHandler.JoinCommunity)
+	protected := community.Group("")
+	protected.Use(middleware.AuthMiddleware(tokenRepo))
 
-	community.DELETE("/:id/leave", middleware.AuthMiddleware(tokenRepo), memberHandler.LeaveCommunity)
+	protected.POST("/:id/join", memberHandler.JoinCommunity)
+	protected.DELETE("/:id/leave", memberHandler.LeaveCommunity)
+
+	protected.GET("/saved", memberHandler.GetSavedCommunities)
+	protected.POST("/:id/save", memberHandler.SaveCommunity)
+	protected.DELETE("/:id/save", memberHandler.UnsaveCommunity)
 }
