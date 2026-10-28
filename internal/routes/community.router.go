@@ -30,4 +30,7 @@ func CommunityRoutes(
 	protected.GET("/saved", memberHandler.GetSavedCommunities)
 	protected.POST("/:id/save", memberHandler.SaveCommunity)
 	protected.DELETE("/:id/save", memberHandler.UnsaveCommunity)
+
+	community.GET("/:id/discussions", memberHandler.GetCommunityDiscussions)
+	protected.POST("/:id/discussions", memberHandler.CreateCommunityDiscussion)
 }
