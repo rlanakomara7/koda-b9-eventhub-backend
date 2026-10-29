@@ -31,7 +31,6 @@ services:
 
   db:
     image: postgres:16-alpine
-
     container_name: eventhub_db
 
     environment:
@@ -52,7 +51,6 @@ services:
 
   cache:
     image: redis:7-alpine
-
     container_name: eventhub_cache
 
     environment:
@@ -72,7 +70,11 @@ services:
     restart: unless-stopped
 
   nginx:
-    image: nginx:alpine
+    build:
+      context: ${FRONTEND_CONTEXT:-../EventHub}
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ""
 
     container_name: eventhub_nginx
 
