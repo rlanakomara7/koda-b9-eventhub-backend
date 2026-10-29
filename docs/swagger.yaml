@@ -686,6 +686,71 @@ paths:
       summary: Get Community Members
       tags:
       - communities
+  /api/communities/{id}/save:
+    delete:
+      description: Remove a community from the authenticated user's favorites
+      parameters:
+      - description: Community ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Unsave Community
+      tags:
+      - communities
+    post:
+      description: Save a community to the authenticated user's favorites
+      parameters:
+      - description: Community ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Save Community
+      tags:
+      - communities
   /api/communities/public:
     get:
       description: List active communities for the Explore page
@@ -701,6 +766,29 @@ paths:
           schema:
             $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       summary: Get Public Communities
+      tags:
+      - communities
+  /api/communities/saved:
+    get:
+      description: Get communities saved by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CommunityListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Get Saved Communities
       tags:
       - communities
   /api/events:
@@ -1074,6 +1162,71 @@ paths:
       summary: Leave Event
       tags:
       - events
+  /api/events/{id}/save:
+    delete:
+      description: Remove an event from the authenticated user's favorites
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Unsave Event
+      tags:
+      - events
+    post:
+      description: Save an event to the authenticated user's favorites
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Save Event
+      tags:
+      - events
   /api/events/categories:
     get:
       description: Get all available event categories
@@ -1136,6 +1289,29 @@ paths:
       security:
       - BearerToken: []
       summary: Get My Events
+      tags:
+      - events
+  /api/events/saved:
+    get:
+      description: Get events saved by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCardListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Get Saved Events
       tags:
       - events
   /api/events/upcoming:
