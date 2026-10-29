@@ -1,2 +1,1 @@
-
-DROP TABLE IF EXISTS event_discussions;
+DROP INDEX IF EXISTS idx_event_discussions_event_id;

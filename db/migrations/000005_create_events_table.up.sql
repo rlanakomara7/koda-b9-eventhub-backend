@@ -13,7 +13,7 @@ CREATE TABLE events (
     capacity INTEGER NOT NULL,
     status event_status NOT NULL DEFAULT 'active',
     created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW(),psql -h 127.0.0.1 -p 5432 -U koda9 -d koda_eventhub_migration_test -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+    updated_at TIMESTAMP DEFAULT NOW(),
 
     CONSTRAINT fk_event_creator
         FOREIGN KEY (user_id)

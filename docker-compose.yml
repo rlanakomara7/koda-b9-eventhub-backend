@@ -87,5 +87,25 @@ services:
 
     restart: unless-stopped
 
+  migrate:
+    image: migrate/migrate:v4.20.1
+
+    profiles:
+      - tools
+
+    volumes:
+      - ./db/migrations:/migrations:ro
+
+    entrypoint:
+      - migrate
+      - -path
+      - /migrations
+      - -database
+      - "postgres://${DBUSER}:${DBPASS}@db:5432/${MIGRATE_DB:-eventhub_make_test}?sslmode=disable"
+
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   eventhub_db:

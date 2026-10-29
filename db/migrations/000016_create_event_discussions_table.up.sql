@@ -10,4 +10,4 @@ CREATE TABLE event_discussions (
 
     FOREIGN KEY (user_id)
         REFERENCES users(user_id)
-);find db/migrations -type f -size 0 -print
+);
