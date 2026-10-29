@@ -11,3 +11,7 @@ type NotificationResponse struct {
 	Read      bool      `json:"read"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+type NotificationListResponse struct {
+	Data []NotificationResponse `json:"data"`
+}

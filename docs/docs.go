@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.ForgotPasswordRequest"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ForgotPasswordRequest"
                         }
                     }
                 ],
@@ -43,13 +43,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.ForgotPasswordResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ForgotPasswordResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -75,7 +75,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.LoginRequest"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.LoginRequest"
                         }
                     }
                 ],
@@ -83,19 +83,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.LoginResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.LoginResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -129,7 +129,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -155,7 +155,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.RegisterRequest"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.RegisterRequest"
                         }
                     }
                 ],
@@ -163,13 +163,13 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/dto.Response"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -195,7 +195,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.ResetPasswordRequest"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ResetPasswordRequest"
                         }
                     }
                 ],
@@ -203,13 +203,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.Response"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -248,19 +248,45 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.CommunityListResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CommunityListResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/communities/public": {
+            "get": {
+                "description": "List active communities for the Explore page",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "communities"
+                ],
+                "summary": "Get Public Communities",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CommunityListResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -294,19 +320,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.Response"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -340,19 +366,60 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.Response"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/communities/{id}/members": {
+            "get": {
+                "description": "Get actual community member profiles",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "communities"
+                ],
+                "summary": "Get Community Members",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Community ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -360,25 +427,43 @@ const docTemplate = `{
         },
         "/api/events": {
             "get": {
-                "description": "Get event list with optional search and format filter",
+                "description": "Get events with pagination and filters",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "events"
                 ],
-                "summary": "Get Events",
+                "summary": "Get paginated events",
                 "parameters": [
                     {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page size",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
                         "type": "string",
-                        "description": "Search event by title",
+                        "description": "Event title",
                         "name": "search",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "Filter event format: in_person or online",
+                        "description": "online or in_person",
                         "name": "format",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Event category",
+                        "name": "category",
                         "in": "query"
                     }
                 ],
@@ -386,19 +471,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.EventListSuccessResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventPaginationResponse"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.EventListNotFoundResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -509,37 +594,101 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/dto.CreateEventResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CreateEventResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events/categories": {
+            "get": {
+                "description": "Get all available event categories",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "events"
+                ],
+                "summary": "Get event categories",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events/joined": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Get events joined by the authenticated user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "events"
+                ],
+                "summary": "Get events joined by current user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCardListResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -564,19 +713,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.MyEventListResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.MyEventListResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -596,13 +745,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.EventListSuccessResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventListSuccessResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -631,25 +780,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.EventDetailSuccessResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventDetailSuccessResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -681,37 +830,37 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.DeleteEventResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.DeleteEventResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -829,43 +978,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.UpdateEventResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.UpdateEventResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -899,19 +1048,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.Response"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -945,19 +1094,151 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.Response"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Get notifications for the authenticated user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "notifications"
+                ],
+                "summary": "Get Notifications",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.NotificationListResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/read-all": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Mark all notifications of the authenticated user as read",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "notifications"
+                ],
+                "summary": "Mark All Notifications as Read",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/{id}/read": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Mark one notification as read",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "notifications"
+                ],
+                "summary": "Mark Notification as Read",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notification ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -982,19 +1263,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.ProfileSuccessResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileSuccessResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -1047,31 +1328,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.ProfileSuccessResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileSuccessResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dto.ErrorResponse"
+                            "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse"
                         }
                     }
                 }
@@ -1079,7 +1360,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dto.AuthUserResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.AuthUserResponse": {
             "type": "object",
             "properties": {
                 "avatar_url": {
@@ -1096,18 +1377,18 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.CommunityListResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CommunityListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dto.CommunityResponse"
+                        "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CommunityResponse"
                     }
                 }
             }
         },
-        "dto.CommunityResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CommunityResponse": {
             "type": "object",
             "properties": {
                 "banner_url": {
@@ -1139,7 +1420,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.CreateEventResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CreateEventResponse": {
             "type": "object",
             "properties": {
                 "event_id": {
@@ -1150,7 +1431,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.DeleteEventResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.DeleteEventResponse": {
             "type": "object",
             "properties": {
                 "event_id": {
@@ -1161,7 +1442,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ErrorResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1169,7 +1450,56 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.EventCommunityResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCardListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCardResponse"
+                    }
+                }
+            }
+        },
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCardResponse": {
+            "type": "object",
+            "properties": {
+                "attendee_count": {
+                    "type": "integer"
+                },
+                "banner_url": {
+                    "type": "string"
+                },
+                "capacity": {
+                    "type": "integer"
+                },
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "event_date": {
+                    "type": "string"
+                },
+                "event_id": {
+                    "type": "integer"
+                },
+                "format": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "start_time": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCommunityResponse": {
             "type": "object",
             "properties": {
                 "community_id": {
@@ -1180,7 +1510,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.EventDetailResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventDetailResponse": {
             "type": "object",
             "properties": {
                 "availability": {
@@ -1199,7 +1529,7 @@ const docTemplate = `{
                     }
                 },
                 "community": {
-                    "$ref": "#/definitions/dto.EventCommunityResponse"
+                    "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCommunityResponse"
                 },
                 "description": {
                     "type": "string"
@@ -1210,7 +1540,7 @@ const docTemplate = `{
                 "discussions": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dto.EventDiscussionResponse"
+                        "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventDiscussionResponse"
                     }
                 },
                 "end_time": {
@@ -1235,7 +1565,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "organizer": {
-                    "$ref": "#/definitions/dto.OrganizerResponse"
+                    "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.OrganizerResponse"
                 },
                 "registered": {
                     "type": "integer"
@@ -1243,7 +1573,7 @@ const docTemplate = `{
                 "speakers": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dto.EventSpeakerResponse"
+                        "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventSpeakerResponse"
                     }
                 },
                 "spots_left": {
@@ -1257,15 +1587,15 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.EventDetailSuccessResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventDetailSuccessResponse": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/dto.EventDetailResponse"
+                    "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventDetailResponse"
                 }
             }
         },
-        "dto.EventDiscussionResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventDiscussionResponse": {
             "type": "object",
             "properties": {
                 "avatar_url": {
@@ -1275,6 +1605,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "discussion_id": {
+                    "type": "integer"
+                },
+                "event_id": {
                     "type": "integer"
                 },
                 "message": {
@@ -1288,13 +1621,13 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.EventListNotFoundResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventListNotFoundResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Event"
+                        "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_models.Event"
                     }
                 },
                 "message": {
@@ -1302,18 +1635,32 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.EventListSuccessResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventListSuccessResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Event"
+                        "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_models.Event"
                     }
                 }
             }
         },
-        "dto.EventSpeakerResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventPaginationResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCardResponse"
+                    }
+                },
+                "metadata": {
+                    "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.PaginationMeta"
+                }
+            }
+        },
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventSpeakerResponse": {
             "type": "object",
             "properties": {
                 "avatar_url": {
@@ -1333,7 +1680,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ForgotPasswordRequest": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ForgotPasswordRequest": {
             "type": "object",
             "required": [
                 "email"
@@ -1344,7 +1691,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ForgotPasswordResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ForgotPasswordResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1355,7 +1702,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.LoginRequest": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1370,7 +1717,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.LoginResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.LoginResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1380,22 +1727,22 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/dto.AuthUserResponse"
+                    "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.AuthUserResponse"
                 }
             }
         },
-        "dto.MyEventListResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.MyEventListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dto.MyEventResponse"
+                        "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.MyEventResponse"
                     }
                 }
             }
         },
-        "dto.MyEventResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.MyEventResponse": {
             "type": "object",
             "properties": {
                 "banner_url": {
@@ -1436,7 +1783,44 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.OrganizerResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.NotificationListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.NotificationResponse"
+                    }
+                }
+            }
+        },
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.NotificationResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "read": {
+                    "type": "boolean"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.OrganizerResponse": {
             "type": "object",
             "properties": {
                 "avatar_url": {
@@ -1450,7 +1834,30 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ProfileResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.PaginationMeta": {
+            "type": "object",
+            "properties": {
+                "current_page": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "next": {
+                    "type": "string"
+                },
+                "prev": {
+                    "type": "string"
+                },
+                "total_data": {
+                    "type": "integer"
+                },
+                "total_page": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileResponse": {
             "type": "object",
             "properties": {
                 "avatar_url": {
@@ -1475,11 +1882,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "stats": {
-                    "$ref": "#/definitions/dto.ProfileStats"
+                    "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileStats"
                 }
             }
         },
-        "dto.ProfileStats": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileStats": {
             "type": "object",
             "properties": {
                 "communities": {
@@ -1493,18 +1900,18 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ProfileSuccessResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileSuccessResponse": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/dto.ProfileResponse"
+                    "$ref": "#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileResponse"
                 },
                 "message": {
                     "type": "string"
                 }
             }
         },
-        "dto.RegisterRequest": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.RegisterRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1526,7 +1933,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ResetPasswordRequest": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ResetPasswordRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1546,7 +1953,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.Response": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1554,7 +1961,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.UpdateEventResponse": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.UpdateEventResponse": {
             "type": "object",
             "properties": {
                 "event_id": {
@@ -1565,7 +1972,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Event": {
+        "github_com_rlanakomara7_koda-b9-eventhub-backend_internal_models.Event": {
             "type": "object",
             "properties": {
                 "banner_url": {

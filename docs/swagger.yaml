@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  dto.AuthUserResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.AuthUserResponse:
     properties:
       avatar_url:
         type: string
@@ -11,14 +11,14 @@ definitions:
       role:
         type: string
     type: object
-  dto.CommunityListResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CommunityListResponse:
     properties:
       data:
         items:
-          $ref: '#/definitions/dto.CommunityResponse'
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CommunityResponse'
         type: array
     type: object
-  dto.CommunityResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CommunityResponse:
     properties:
       banner_url:
         type: string
@@ -39,33 +39,65 @@ definitions:
       upcoming_count:
         type: integer
     type: object
-  dto.CreateEventResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CreateEventResponse:
     properties:
       event_id:
         type: integer
       message:
         type: string
     type: object
-  dto.DeleteEventResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.DeleteEventResponse:
     properties:
       event_id:
         type: integer
       message:
         type: string
     type: object
-  dto.ErrorResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse:
     properties:
       message:
         type: string
     type: object
-  dto.EventCommunityResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCardListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCardResponse'
+        type: array
+    type: object
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCardResponse:
+    properties:
+      attendee_count:
+        type: integer
+      banner_url:
+        type: string
+      capacity:
+        type: integer
+      categories:
+        items:
+          type: string
+        type: array
+      event_date:
+        type: string
+      event_id:
+        type: integer
+      format:
+        type: string
+      location:
+        type: string
+      start_time:
+        type: string
+      title:
+        type: string
+    type: object
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCommunityResponse:
     properties:
       community_id:
         type: integer
       name:
         type: string
     type: object
-  dto.EventDetailResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventDetailResponse:
     properties:
       availability:
         type: string
@@ -78,14 +110,14 @@ definitions:
           type: string
         type: array
       community:
-        $ref: '#/definitions/dto.EventCommunityResponse'
+        $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCommunityResponse'
       description:
         type: string
       discussion_count:
         type: integer
       discussions:
         items:
-          $ref: '#/definitions/dto.EventDiscussionResponse'
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventDiscussionResponse'
         type: array
       end_time:
         type: string
@@ -102,12 +134,12 @@ definitions:
       location:
         type: string
       organizer:
-        $ref: '#/definitions/dto.OrganizerResponse'
+        $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.OrganizerResponse'
       registered:
         type: integer
       speakers:
         items:
-          $ref: '#/definitions/dto.EventSpeakerResponse'
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventSpeakerResponse'
         type: array
       spots_left:
         type: integer
@@ -116,18 +148,20 @@ definitions:
       title:
         type: string
     type: object
-  dto.EventDetailSuccessResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventDetailSuccessResponse:
     properties:
       data:
-        $ref: '#/definitions/dto.EventDetailResponse'
+        $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventDetailResponse'
     type: object
-  dto.EventDiscussionResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventDiscussionResponse:
     properties:
       avatar_url:
         type: string
       created_at:
         type: string
       discussion_id:
+        type: integer
+      event_id:
         type: integer
       message:
         type: string
@@ -136,23 +170,32 @@ definitions:
       user_id:
         type: integer
     type: object
-  dto.EventListNotFoundResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventListNotFoundResponse:
     properties:
       data:
         items:
-          $ref: '#/definitions/models.Event'
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_models.Event'
         type: array
       message:
         type: string
     type: object
-  dto.EventListSuccessResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventListSuccessResponse:
     properties:
       data:
         items:
-          $ref: '#/definitions/models.Event'
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_models.Event'
         type: array
     type: object
-  dto.EventSpeakerResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventPaginationResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCardResponse'
+        type: array
+      metadata:
+        $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.PaginationMeta'
+    type: object
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventSpeakerResponse:
     properties:
       avatar_url:
         type: string
@@ -165,21 +208,21 @@ definitions:
       speaker_id:
         type: integer
     type: object
-  dto.ForgotPasswordRequest:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ForgotPasswordRequest:
     properties:
       email:
         type: string
     required:
     - email
     type: object
-  dto.ForgotPasswordResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ForgotPasswordResponse:
     properties:
       message:
         type: string
       token:
         type: string
     type: object
-  dto.LoginRequest:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.LoginRequest:
     properties:
       email:
         type: string
@@ -189,23 +232,23 @@ definitions:
     - email
     - password
     type: object
-  dto.LoginResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.LoginResponse:
     properties:
       message:
         type: string
       token:
         type: string
       user:
-        $ref: '#/definitions/dto.AuthUserResponse'
+        $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.AuthUserResponse'
     type: object
-  dto.MyEventListResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.MyEventListResponse:
     properties:
       data:
         items:
-          $ref: '#/definitions/dto.MyEventResponse'
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.MyEventResponse'
         type: array
     type: object
-  dto.MyEventResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.MyEventResponse:
     properties:
       banner_url:
         type: string
@@ -232,7 +275,31 @@ definitions:
       title:
         type: string
     type: object
-  dto.OrganizerResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.NotificationListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.NotificationResponse'
+        type: array
+    type: object
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.NotificationResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      path:
+        type: string
+      read:
+        type: boolean
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.OrganizerResponse:
     properties:
       avatar_url:
         type: string
@@ -241,7 +308,22 @@ definitions:
       user_id:
         type: integer
     type: object
-  dto.ProfileResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.PaginationMeta:
+    properties:
+      current_page:
+        type: integer
+      limit:
+        type: integer
+      next:
+        type: string
+      prev:
+        type: string
+      total_data:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileResponse:
     properties:
       avatar_url:
         type: string
@@ -258,9 +340,9 @@ definitions:
       role:
         type: string
       stats:
-        $ref: '#/definitions/dto.ProfileStats'
+        $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileStats'
     type: object
-  dto.ProfileStats:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileStats:
     properties:
       communities:
         type: integer
@@ -269,14 +351,14 @@ definitions:
       saved:
         type: integer
     type: object
-  dto.ProfileSuccessResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileSuccessResponse:
     properties:
       data:
-        $ref: '#/definitions/dto.ProfileResponse'
+        $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileResponse'
       message:
         type: string
     type: object
-  dto.RegisterRequest:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.RegisterRequest:
     properties:
       email:
         type: string
@@ -292,7 +374,7 @@ definitions:
     - name
     - password
     type: object
-  dto.ResetPasswordRequest:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ResetPasswordRequest:
     properties:
       email:
         type: string
@@ -306,19 +388,19 @@ definitions:
     - new_password
     - token
     type: object
-  dto.Response:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response:
     properties:
       message:
         type: string
     type: object
-  dto.UpdateEventResponse:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.UpdateEventResponse:
     properties:
       event_id:
         type: integer
       message:
         type: string
     type: object
-  models.Event:
+  github_com_rlanakomara7_koda-b9-eventhub-backend_internal_models.Event:
     properties:
       banner_url:
         type: string
@@ -369,18 +451,18 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/dto.ForgotPasswordRequest'
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ForgotPasswordRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.ForgotPasswordResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ForgotPasswordResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       summary: Forgot Password
       tags:
       - auth
@@ -395,22 +477,22 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/dto.LoginRequest'
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.LoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.LoginResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.LoginResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       summary: Login
       tags:
       - auth
@@ -429,7 +511,7 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       security:
       - BearerToken: []
       summary: Logout
@@ -446,18 +528,18 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/dto.RegisterRequest'
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.RegisterRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dto.Response'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       summary: Register Account
       tags:
       - auth
@@ -472,18 +554,18 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/dto.ResetPasswordRequest'
+          $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ResetPasswordRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.Response'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       summary: Reset Password
       tags:
       - auth
@@ -505,15 +587,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.CommunityListResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CommunityListResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       security:
       - BearerToken: []
       summary: Get Communities
@@ -534,15 +616,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.Response'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       security:
       - BearerToken: []
       summary: Join Community
@@ -563,31 +645,87 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.Response'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       security:
       - BearerToken: []
       summary: Leave Community
       tags:
       - communities
+  /api/communities/{id}/members:
+    get:
+      description: Get actual community member profiles
+      parameters:
+      - description: Community ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      summary: Get Community Members
+      tags:
+      - communities
+  /api/communities/public:
+    get:
+      description: List active communities for the Explore page
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CommunityListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      summary: Get Public Communities
+      tags:
+      - communities
   /api/events:
     get:
-      description: Get event list with optional search and format filter
+      description: Get events with pagination and filters
       parameters:
-      - description: Search event by title
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: limit
+        type: integer
+      - description: Event title
         in: query
         name: search
         type: string
-      - description: 'Filter event format: in_person or online'
+      - description: online or in_person
         in: query
         name: format
+        type: string
+      - description: Event category
+        in: query
+        name: category
         type: string
       produces:
       - application/json
@@ -595,16 +733,16 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.EventListSuccessResponse'
-        "404":
-          description: Not Found
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventPaginationResponse'
+        "400":
+          description: Bad Request
           schema:
-            $ref: '#/definitions/dto.EventListNotFoundResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
-      summary: Get Events
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      summary: Get paginated events
       tags:
       - events
     post:
@@ -676,27 +814,27 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dto.CreateEventResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.CreateEventResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "422":
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       security:
       - BearerToken: []
       summary: Create Event
@@ -717,27 +855,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.DeleteEventResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.DeleteEventResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       security:
       - BearerToken: []
       summary: Delete Event
@@ -757,19 +895,19 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.EventDetailSuccessResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventDetailSuccessResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       summary: Get Event Detail
       tags:
       - events
@@ -848,31 +986,31 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.UpdateEventResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.UpdateEventResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "422":
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       security:
       - BearerToken: []
       summary: Update Event
@@ -893,15 +1031,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.Response'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       security:
       - BearerToken: []
       summary: Join Event
@@ -922,18 +1060,59 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.Response'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       security:
       - BearerToken: []
       summary: Leave Event
+      tags:
+      - events
+  /api/events/categories:
+    get:
+      description: Get all available event categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      summary: Get event categories
+      tags:
+      - events
+  /api/events/joined:
+    get:
+      description: Get events joined by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventCardListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Get events joined by current user
       tags:
       - events
   /api/events/my:
@@ -945,15 +1124,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.MyEventListResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.MyEventListResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       security:
       - BearerToken: []
       summary: Get My Events
@@ -968,14 +1147,97 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.EventListSuccessResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.EventListSuccessResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       summary: Get Upcoming Events
       tags:
       - events
+  /api/notifications:
+    get:
+      description: Get notifications for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.NotificationListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Get Notifications
+      tags:
+      - notifications
+  /api/notifications/{id}/read:
+    patch:
+      description: Mark one notification as read
+      parameters:
+      - description: Notification ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Mark Notification as Read
+      tags:
+      - notifications
+  /api/notifications/read-all:
+    patch:
+      description: Mark all notifications of the authenticated user as read
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
+      security:
+      - BearerToken: []
+      summary: Mark All Notifications as Read
+      tags:
+      - notifications
   /api/profile:
     get:
       description: Get profile of currently logged in user
@@ -985,15 +1247,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.ProfileSuccessResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileSuccessResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       security:
       - BearerToken: []
       summary: Get Profile
@@ -1027,23 +1289,23 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.ProfileSuccessResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ProfileSuccessResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "422":
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
+            $ref: '#/definitions/github_com_rlanakomara7_koda-b9-eventhub-backend_internal_dto.ErrorResponse'
       security:
       - BearerToken: []
       summary: Update Profile

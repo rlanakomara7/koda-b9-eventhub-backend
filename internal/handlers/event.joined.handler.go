@@ -4,14 +4,18 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rlanakomara7/koda-b9-eventhub-backend/internal/dto"
 )
 
 // GetJoinedEvents godoc
 // @Summary Get events joined by current user
+// @Description Get events joined by the authenticated user
 // @Tags events
 // @Produce json
 // @Security BearerToken
 // @Success 200 {object} dto.EventCardListResponse
+// @Failure 401 {object} dto.ErrorResponse
+// @Failure 500 {object} dto.ErrorResponse
 // @Router /api/events/joined [get]
 func (h *EventMemberHandler) GetJoinedEvents(c *gin.Context) {
 	userID := c.GetUint("user_id")
@@ -32,7 +36,7 @@ func (h *EventMemberHandler) GetJoinedEvents(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": events,
+	c.JSON(http.StatusOK, dto.EventCardListResponse{
+		Data: events,
 	})
 }
