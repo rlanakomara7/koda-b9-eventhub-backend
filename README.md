@@ -1,195 +1,340 @@
-# EVENTHUB API
+# EventHub — Backend API
 
-[![License](https://img.shields.io/badge/License-MIT-green)](https://opensource.org/license/mit)
-[![Go](https://img.shields.io/badge/Go-1.27.1-blue?logo=Go)](https://go.dev/)
-![Gin-Gonic](https://img.shields.io/badge/Gin%20Gonic-1.12.0-blue?logo=Gin&logoColor=fff300).
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16.15-blue?logo=postgresql)](https://www.postgresql.org/)
-[![Redis](https://img.shields.io/badge/Redis-9.22.0-blue?logo=Redis)](https://hub.docker.com/_/redishttps://hub.docker.com/_/redis)
-[![Swagger](https://img.shields.io/badge/Swagger-1.6.1-blue?logo=swagger)](https://swagger.io)
-[![Swagger](https://img.shields.io/badge/Docker-29.8.1-blue?logo=docker)](https://www.docker.com)
+![Go](https://img.shields.io/badge/Go-1.27.1-00ADD8?style=for-the-badge&logo=go&logoColor=white)
+![Gin](https://img.shields.io/badge/Gin-1.12.0-008ECF?style=for-the-badge)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-Swaggo-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
+![Docker](https://img.shields.io/badge/Docker-Multi--stage-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-<br>
+**EventHub Backend** is a RESTful API built with Golang and Gin for an event and community management platform.
 
-![Logo Koda](https://kodacampmain.github.io/assets-library/img/logo-black.png)
+It handles authentication, event management, community membership, user profiles, saved events, discussions, and related application data.
 
-<br>
-
-EventHub API is a REST API backend project developed as part of the Koda Academy Batch 9 backend exercise.
-
-The application provides authentication, event management, community management, user profiles, Redis caching, PostgreSQL persistence, Swagger documentation, and Docker-based deployment.
-
-<br>
+Developed as part of the Koda Academy Full-Stack Web Development project.
 
 ## Technologies
 
-### Backend
-
-- Go (Golang)
-- Gin Gonic
-- REST API
-- MVC / Layered Architecture
-
-### Database & Cache
-
-- PostgreSQL
-- Redis 7
-
-### Authentication
-
-- JWT (JSON Web Token)
-- Token Blacklist
-
-### API Documentation
-
-- Swagger / OpenAPI
-
-### DevOps
-
-- Docker
-- Docker Compose
-- Nginx Reverse Proxy
-
-### Development Tools
-
-- Git
-- GitHub
-- Makefile
-- Environment Variables (.env)
+| Technology     | Purpose                               |
+| -------------- | ------------------------------------- |
+| Go 1.27.1      | Backend programming language          |
+| Gin 1.12.0     | HTTP routing and request handling     |
+| PostgreSQL 16  | Relational database                   |
+| pgx/v5         | PostgreSQL driver and connection pool |
+| Redis          | Event data caching                    |
+| JWT            | Authentication                        |
+| Gin Validator  | Request validation                    |
+| Swaggo         | API documentation                     |
+| golang-migrate | Database version management           |
+| Docker         | Multi-stage container build           |
+| Docker Compose | Service orchestration                 |
+| Nginx          | Reverse proxy                         |
 
 ## Features
 
-- Authentication
-  - Register,
-  - Login,
-  - Logout,
-  - Forgot Password,
-  - Reset Password.
-- User Profile
-- Edit User Profile
-- Event List
-- Event Detail
-- Join Event
-- Saved Event
-- Community List
-- Community Detail
-- Join Community
-- Comment & Testimonial
+### Authentication
 
-## Usage Instruction
+- Register and login
+- JWT authentication
+- Logout and token blacklist
+- Forgot and reset password
 
-### DB Setup
+### Event Management
 
-1. Create an environment file named `.env` in the root directory.
-2. Configure your database credentials:
+- Event listing, searching, and pagination
+- Event categories
+- Event details
+- Create, update, and delete events
+- Join and leave events
+- Saved events
+- Event discussions
 
-```env
-DB_HOST={YOUR_DB_HOST}
-DB_PORT=5432
-DB_USER={YOUR_DB_USER}
-DB_PASS={YOUR_DB_PASSWORD}
-DB_NAME={YOUR_DB_NAME}
+### Community Management
+
+- Community listing and categories
+- Join and leave communities
+- Saved communities
+- Community member listing
+- Community discussions
+
+### User Profile
+
+- Get profile
+- Update profile
+- Upload avatar
+
+## Project Architecture
+
+The API uses a layered architecture:
+
+```text
+cmd/
+└── main.go
+
+internal/
+├── config/          # PostgreSQL and Redis
+├── dto/             # Request and response structures
+├── handlers/        # Gin handlers
+├── middleware/      # JWT and CORS
+├── models/          # Models
+├── repositories/    # PostgreSQL queries
+├── routes/          # API routing
+├── services/        # Business logic
+└── utils/           # Shared utilities
+
+db/
+├── migrations/      # SQL migrations
+└── seeds/           # Initial data
+
+docs/                # Swagger documentation
+nginx/               # Reverse proxy configuration
+Dockerfile
+docker-compose.yml
+docker-compose.production.yml
+makefile
 ```
 
-Add other environment variables required by the application. Do not commit real credentials to GitHub.
+## Getting Started
 
-### Running the Application
+### Prerequisites
 
-1. Clone this repository:
+- Git
+- Go version compatible with `go.mod`
+- Docker and Docker Compose
+- Make and golang-migrate CLI for migration commands
+- PostgreSQL and Redis, provided by Docker Compose
+
+### Clone Repository
 
 ```bash
 git clone https://github.com/rlanakomara7/koda-b9-eventhub-backend.git
 cd koda-b9-eventhub-backend
 ```
 
-2. Configure your `.env` file.
+### Environment Configuration
 
-3. Build and run using Docker Compose:
+Create `.env` in the project root.
+
+Example for the Docker Compose environment:
+
+```env
+HOST=0.0.0.0
+PORT=9000
+
+DBUSER=eventhub
+DBPASS=replace_with_database_password
+DBHOST=db
+DBPORT=5432
+DBNAME=koda_eventhub
+
+JWT_SECRET=replace_with_a_secure_random_secret
+
+RDB_HOST=cache
+RDB_PORT=6379
+RDB_USER=default
+RDB_PASS=replace_with_redis_password
+```
+
+Replace the sample credentials with your own values.
+
+Never commit real secrets or `.env` files.
+
+### Run with Docker Compose
 
 ```bash
 docker compose up -d --build
 ```
 
-4. Check running containers:
+Check services:
 
 ```bash
 docker compose ps
 ```
 
-5. Access Swagger Documentation:
+View backend logs:
 
-`http://localhost:8500/swagger/index.html`
+```bash
+docker compose logs -f backend
+```
 
-To stop the application:
+Backend API:
+
+http://localhost:8500/api
+
+Swagger UI:
+
+http://localhost:8500/swagger/index.html
+
+Stop without removing database volumes:
 
 ```bash
 docker compose down
 ```
 
-### Running with Frontend
+## Database Migrations
 
-For the integrated production environment, ensure the frontend repository is available at the path configured in Docker Compose.
+Migration files are stored in `db/migrations/`.
+
+The Makefile uses `.env.migration` to connect to PostgreSQL.
+
+Available commands:
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.production.yml up -d --build
+make migrate-version
+make migrate-up
+make migrate-down
+make seed
 ```
 
-## Routes
+**Important:** Verify that `.env.migration` targets the intended database before running these commands.
+
+The Docker database and a local PostgreSQL instance may be different.
+
+Migration files must be tested on a fresh database before production use. Do not force migration versions or reset a database containing important data without verification.
+
+Seeder files are available under `db/seeds/`.
+
+## API Endpoints
+
+Base URL:
+
+http://localhost:8500
 
 ### Authentication
 
-| Endpoint             | Method | Description   |
-| -------------------- | ------ | ------------- |
-| `/api/auth/register` | POST   | Register User |
-| `/api/auth/login`    | POST   | Login         |
-| `/api/auth/logout`   | POST   | Logout        |
+| Method | Endpoint                    | Description     |
+| ------ | --------------------------- | --------------- |
+| POST   | `/api/auth/register`        | Register        |
+| POST   | `/api/auth/login`           | Login           |
+| POST   | `/api/auth/logout`          | Logout          |
+| POST   | `/api/auth/forgot-password` | Forgot password |
+| POST   | `/api/auth/reset-password`  | Reset password  |
 
 ### Events
 
-| Endpoint                | Method | Description  |
-| ----------------------- | ------ | ------------ |
-| `/api/events`           | GET    | Event List   |
-| `/api/events/:id`       | GET    | Event Detail |
-| `/api/events`           | POST   | Create Event |
-| `/api/events/my`        | GET    | My Events    |
-| `/api/events/:id`       | PATCH  | Update Event |
-| `/api/events/:id`       | DELETE | Delete Event |
-| `/api/events/:id/join`  | POST   | Join Event   |
-| `/api/events/:id/leave` | DELETE | Leave Event  |
+| Method | Endpoint                      | Description     |
+| ------ | ----------------------------- | --------------- |
+| GET    | `/api/events`                 | List events     |
+| GET    | `/api/events/:id`             | Event details   |
+| GET    | `/api/events/categories`      | Categories      |
+| POST   | `/api/events`                 | Create event    |
+| PATCH  | `/api/events/:id`             | Update event    |
+| DELETE | `/api/events/:id`             | Delete event    |
+| POST   | `/api/events/:id/join`        | Join event      |
+| DELETE | `/api/events/:id/leave`       | Leave event     |
+| GET    | `/api/events/joined`          | Joined events   |
+| GET    | `/api/events/saved`           | Saved events    |
+| GET    | `/api/events/:id/discussions` | Discussions     |
+| POST   | `/api/events/:id/discussions` | Post discussion |
 
 ### Communities
 
-| Endpoint                       | Method | Description        |
-| ------------------------------ | ------ | ------------------ |
-| `/api/communities`             | GET    | Community List     |
-| `/api/communities/public`      | GET    | Public Communities |
-| `/api/communities/:id/members` | GET    | Community Members  |
-| `/api/communities/:id/join`    | POST   | Join Community     |
-| `/api/communities/:id/leave`   | DELETE | Leave Community    |
+| Method | Endpoint                           | Description        |
+| ------ | ---------------------------------- | ------------------ |
+| GET    | `/api/communities`                 | List communities   |
+| GET    | `/api/communities/public`          | Public communities |
+| POST   | `/api/communities/:id/join`        | Join community     |
+| DELETE | `/api/communities/:id/leave`       | Leave community    |
+| GET    | `/api/communities/:id/members`     | Community members  |
+| GET    | `/api/communities/saved`           | Saved communities  |
+| GET    | `/api/communities/:id/discussions` | Discussions        |
+| POST   | `/api/communities/:id/discussions` | Post discussion    |
 
-Some endpoints require JWT authentication.
+### User Profile
 
-### Documentation
+| Method | Endpoint       | Description    |
+| ------ | -------------- | -------------- |
+| GET    | `/api/profile` | Get profile    |
+| PATCH  | `/api/profile` | Update profile |
 
-For complete API documentation, visit `/swagger/index.html`.
+Protected endpoints require:
 
-## Changelog
+```http
+Authorization: Bearer YOUR_TOKEN
+```
 
-| Version    | Description                                                                             |
-| ---------- | --------------------------------------------------------------------------------------- |
-| Unreleased | Authentication, User Profile, Event Management, Community Management, Community Members |
-| Planned    | Event Discussion and Community Discussion                                               |
+## Database Transactions
 
-## How to Contribute
+Transactions are implemented in event creation, update, and deletion operations.
 
-1. Fork this repository.
-2. Create a new branch.
-3. Commit and push your changes.
-4. Open a Pull Request.
+Related database changes use `BEGIN`, `COMMIT`, and `ROLLBACK` through pgx transactions.
+
+## Redis Caching
+
+Redis caches event data to reduce repeated database reads.
+
+The event repository uses `GET` and `SET` with a 10-minute TTL, and cache invalidation using `DEL`.
+
+## File Upload
+
+File uploading is supported for event banners and user avatars.
+
+- Accepted extensions: JPG, JPEG, PNG, WEBP
+- Maximum file size: 2 MB
+- Upload directory: `uploads/`
+- Uploading a file is optional where supported
+
+## Gin Validator
+
+Gin request binding validates:
+
+- Required values
+- Email formats
+- Password length
+- Event capacity
+- Event formats
+- Field length constraints
+
+## CORS
+
+The application uses custom CORS middleware in:
+
+`internal/middleware/cors.middleware.go`
+
+Allowed origins can be configured for the frontend environment.
+
+## Swagger Documentation
+
+Swagger UI:
+
+http://localhost:8500/swagger/index.html
+
+Documentation is generated from Go handler annotations.
+
+After updating annotations, regenerate the Swagger files:
+
+```bash
+swag init -g cmd/main.go --parseDependency --parseInternal
+```
+
+The committed Swagger specification may need updates for newer endpoints.
+
+## Docker and CI/CD
+
+The backend Dockerfile uses a multi-stage build:
+
+1. Go builder stage compiles the application.
+2. Alpine runtime stage executes the compiled binary.
+
+The repository includes Docker Compose and Nginx configuration.
+
+GitHub Actions is used for building and pushing Docker images to GitHub Container Registry (GHCR) after the workflow is configured and verified.
+
+## Testing
+
+```bash
+go build ./...
+go test ./...
+```
+
+## Related Repository
+
+[EventHub Frontend — React](https://github.com/rlanakomara7/EventHub)
+
+## Project
+
+Koda Academy — Full-Stack Web Development.
 
 ## License
 
-This project is licensed under the **MIT License**. Ensure the repository contains a `LICENSE` file.
-
-## Related Project
-
-[EventHub Frontend](https://github.com/rlanakomara7/EventHub)
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

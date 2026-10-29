@@ -1,17 +1,28 @@
-name: generate docker image
+name: Generate Docker Image
+
 on:
   push:
-    branches: -cicd
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build_and_push:
     runs-on: ubuntu-24.04
+
     steps:
-      - name: get repository
-        uses: actions/checkout@7v
+      - name: Get Repository
+        uses: actions/checkout@v7
 
-      - name: get run docker build
-        run: docker build -t ghcr.io/${{github.repository}}:latest .
+      - name: Run Docker Build
+        run: docker build -t ghcr.io/${{ github.repository }}:latest .
 
-      - name: login to ghcr
-      - run: |
-          echo "${{secrets.GITHUB_TOKEN}}" |
+      - name: Login to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Push to GHCR
+        run: docker push ghcr.io/${{ github.repository }}:latest
